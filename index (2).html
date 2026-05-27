@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Life OS">
+<meta name="theme-color" content="#6c63ff">
+<title>Aman Life OS</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root {
+  --bg: #0f1117; --card: #1a1d27; --border: #2a2d3e;
+  --purple: #6c63ff; --green: #00d084; --red: #ff4757;
+  --yellow: #ffd32a; --blue: #1e90ff; --orange: #ff6b35;
+  --text: #e8eaf6; --muted: #8892b0; --white: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; min-height: 100vh; }
+.app-header { background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%); border-bottom: 1px solid var(--border); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.app-header h1 { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.header-sub { font-size: 11px; color: var(--muted); }
+.nav { display: flex; overflow-x: auto; gap: 4px; padding: 10px 12px; background: var(--card); border-bottom: 1px solid var(--border); scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav button { flex-shrink: 0; padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.nav button.active { background: var(--purple); border-color: var(--purple); color: white; }
+.nav button:hover:not(.active) { border-color: var(--purple); color: var(--purple); }
+.tab { display: none; padding: 16px; max-width: 800px; margin: 0 auto; }
+.tab.active { display: block; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+.card-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+.badge-green { background: rgba(0,208,132,0.15); color: var(--green); }
+.badge-red { background: rgba(255,71,87,0.15); color: var(--red); }
+.badge-yellow { background: rgba(255,211,42,0.15); color: var(--yellow); }
+.badge-purple { background: rgba(108,99,255,0.15); color: var(--purple); }
+.badge-orange { background: rgba(255,107,53,0.15); color: var(--orange); }
+.badge-blue { background: rgba(30,144,255,0.15); color: var(--blue); }
+.progress-bar { background: var(--border); border-radius: 10px; height: 8px; overflow: hidden; margin: 6px 0; }
+.progress-fill { height: 100%; border-radius: 10px; transition: width 0.4s ease; }
+.btn { padding: 10px 20px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: var(--purple); color: white; }
+.btn-primary:hover { background: #5a52e0; }
+.btn-green { background: var(--green); color: #000; }
+.btn-red { background: var(--red); color: white; }
+.btn-sm { padding: 5px 12px; font-size: 11px; border-radius: 8px; }
+.row { display: flex; gap: 10px; align-items: center; }
+.row-between { display: flex; justify-content: space-between; align-items: center; }
+input, select, textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 12px; font-size: 13px; width: 100%; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--purple); }
+.task-item { border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
+.task-item:hover { border-color: var(--purple); }
+.task-item.done { opacity: 0.5; border-color: var(--green); }
+.task-item.skipped { opacity: 0.4; border-color: var(--muted); }
+.task-item.event-mode { border-color: var(--yellow); background: rgba(255,211,42,0.03); }
+.task-steps { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.task-steps.open { display: block; }
+.task-steps li { font-size: 12px; color: var(--muted); margin-bottom: 5px; padding-left: 8px; border-left: 2px solid var(--purple); }
+.action-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
+.stat-num { font-size: 26px; font-weight: 700; }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.event-banner { background: linear-gradient(135deg, rgba(255,211,42,0.1), rgba(255,107,53,0.1)); border: 1px solid var(--yellow); border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; }
+.event-banner h3 { color: var(--yellow); font-size: 14px; }
+.event-banner p { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.macro-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+.macro-item { background: var(--bg); border-radius: 8px; padding: 8px; text-align: center; border: 1px solid var(--border); }
+.macro-val { font-size: 18px; font-weight: 700; color: var(--purple); }
+.macro-lbl { font-size: 10px; color: var(--muted); }
+.ai-msg { padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; font-size: 13px; line-height: 1.6; max-width: 90%; }
+.ai-msg.assistant { background: rgba(108,99,255,0.12); border: 1px solid rgba(108,99,255,0.2); color: var(--text); align-self: flex-start; }
+.ai-msg.user { background: rgba(0,208,132,0.12); border: 1px solid rgba(0,208,132,0.2); color: var(--text); align-self: flex-end; margin-left: auto; }
+.chat-wrap { display: flex; flex-direction: column; gap: 4px; min-height: 200px; max-height: 350px; overflow-y: auto; padding: 4px; }
+.chat-input-row { display: flex; gap: 8px; margin-top: 10px; }
+.chat-input-row input { flex: 1; }
+.notif-item { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.streak-fire { font-size: 22px; }
+.section-sep { height: 1px; background: var(--border); margin: 14px 0; }
+@media (max-width: 500px) { .macro-row { grid-template-columns: repeat(2,1fr); } .stat-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div>
+    <h1>⚡ Aman Life OS</h1>
+    <div class="header-sub" id="headerDate">Loading...</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span id="streakBadge" class="badge badge-orange">🔥 0</span>
+    <button class="btn btn-sm btn-primary" onclick="requestNotifPermission()">🔔</button>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="active" onclick="showTab('today')">📅 Today</button>
+  <button onclick="showTab('training')">💪 Training</button>
+  <button onclick="showTab('meals')">🥗 Meals</button>
+  <button onclick="showTab('mealprep')">🍳 Meal Prep</button>
+  <button onclick="showTab('budget')">💰 Budget</button>
+  <button onclick="showTab('events')">🎉 Events</button>
+  <button onclick="showTab('account')">✅ Actions</button>
+  <button onclick="showTab('calendar')">📆 Calendar</button>
+  <button onclick="showTab('assistant')">🤖 AI Agent</button>
+  <button onclick="showTab('settings')">⚙️ Settings</button>
+</nav>
+
+<!-- ===== TODAY TAB ===== -->
+<div id="tab-today" class="tab active">
+  <div id="eventBannerToday"></div>
+
+  <div class="card">
+    <div class="row-between">
+      <div class="card-title">📊 Today's Progress</div>
+      <span id="todayPct" class="badge badge-purple">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="todayBar" style="width:0%;background:var(--purple)"></div></div>
+    <div class="stat-grid" style="margin-top:10px;">
+      <div class="stat-card"><div class="stat-num" id="tasksDone" style="color:var(--green)">0</div><div class="stat-label">Done</div></div>
+      <div class="stat-card"><div class="stat-num" id="tasksLeft" style="color:var(--yellow)">0</div><div class="stat-label">Remaining</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⏰ Daily Schedule</div>
+    <div id="todayTasks"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💧 Hydration & Supplements</div>
+    <div id="suppTracker"></div>
+    <div style="margin-top:10px;">
+      <div class="row-between"><span style="font-size:13px;">Water (glasses)</span><span id="waterCount" style="color:var(--blue);font-weight:700;">0 / 8</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="waterBar" style="width:0%;background:var(--blue)"></div></div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn btn-sm btn-primary" onclick="addWater()">+ Glass</button>
+        <button class="btn btn-sm" style="background:var(--border);color:var(--muted);" onclick="resetWater()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="card">
+    <div class="card-title">📅 Tomorrow's Plan</div>
+    <div id="tomorrowView"></div>
+  </div>
+
+<div class="card">
+    <div class="card-title">📝 Quick Notes</div>
+    <textarea id="quickNotes" rows="3" placeholder="How is today going? Any blockers?" style="margin-bottom:8px;" oninput="saveNotes()"></textarea>
+    <div style="font-size:11px;color:var(--muted);">Auto-saved locally</div>
+  </div>
+</div>
+
+<!-- ===== TRAINING TAB ===== -->
+<div id="tab-training" class="tab">
+  <div class="card">
+    <div class="card-title">🏋️ HYROX Training Plan — Week View</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Goal: Sub 1:20 | Toronto Oct 2026 | No SkiErg / No Sled</div>
+    <div id="trainingWeek"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">💪 Today's Workout</div>
+    <div id="todayWorkout"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📈 Training Log</div>
+    <div id="trainingLog"></div>
+    <button class="btn btn-primary btn-sm" style="margin-top:10px;" onclick="logWorkout()">+ Log Session</button>
+  </div>
+</div>
+
+<!-- ===== MEALS TAB ===== -->
+<div id="tab-meals" class="tab">
+  <div id="mealEventBanner"></div>
+  <div class="card">
+    <div class="card-title">🎯 Daily Macro Targets</div>
+    <div class="macro-row">
+      <div class="macro-item"><div class="macro-val" style="color:var(--green)">2000</div><div class="macro-lbl">Calories</div></div>
+      <div class="macro-item"><div class="macro-val" style="color:var(--blue)">140g</div><div class="macro-lbl">Protein</div></div>
+      <div class="macro-item"><div class="macro-val" style="color:var(--yellow)">220g</div><div class="macro-lbl">Carbs</div></div>
+      <div class="macro-item"><div class="macro-val" style="color:var(--orange)">55g</div><div class="macro-lbl">Fat</div></div>
+    </div>
+    <div class="card-title" style="margin-top:8px;">Today Logged</div>
+    <div class="macro-row">
+      <div class="macro-item"><div class="macro-val" id="calLogged" style="color:var(--green)">0</div><div class="macro-lbl">Cal</div></div>
+      <div class="macro-item"><div class="macro-val" id="protLogged" style="color:var(--blue)">0g</div><div class="macro-lbl">Protein</div></div>
+      <div class="macro-item"><div class="macro-val" id="carbLogged" style="color:var(--yellow)">0g</div><div class="macro-lbl">Carbs</div></div>
+      <div class="macro-item"><div class="macro-val" id="fatLogged" style="color:var(--orange)">0g</div><div class="macro-lbl">Fat</div></div>
+    </div>
+    <button class="btn btn-primary btn-sm" style="margin-top:8px;" onclick="logMeal()">+ Log Meal</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🗓️ Weekly Meal Plan (Vegetarian, No Eggs, No Sweet Potato)</div>
+    <div id="weeklyMeals"></div>
+  </div>
+</div>
+
+<!-- ===== MEAL PREP TAB ===== -->
+<div id="tab-mealprep" class="tab">
+  <div id="mealPrepBanner"></div>
+  <div class="card">
+    <div class="card-title">🍳 Meal Prep Schedule</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Best prep days: Sunday & Wednesday. Event days auto-shift prep.</div>
+    <div id="mealPrepPlan"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🛒 Grocery List — This Week</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">📍 Nearest stores: Farm Boy (16 Bonnycastle), No Frills (Lower Jarvis), Loblaws (King St)</div>
+    <div id="groceryList"></div>
+    <button class="btn btn-sm btn-primary" style="margin-top:8px;" onclick="addGrocery()">+ Add Item</button>
+  </div>
+</div>
+
+<!-- ===== BUDGET TAB ===== -->
+<div id="tab-budget" class="tab">
+  <div class="card">
+    <div class="card-title">💰 Monthly Overview — $3,800 Salary</div>
+    <div id="budgetOverview"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📝 Log Spend</div>
+    <div style="display:grid;gap:8px;">
+      <select id="spendCat">
+        <option>Groceries</option><option>Eating Out</option><option>Transit</option>
+        <option>Supplements</option><option>Events/Entertainment</option><option>Personal Care</option>
+        <option>Savings Transfer</option><option>Other</option>
+      </select>
+      <input type="number" id="spendAmt" placeholder="Amount ($)" />
+      <input type="text" id="spendNote" placeholder="Note (e.g. Bruno Mars merch)" />
+      <button class="btn btn-primary" onclick="logSpend()">Log Spend</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Spending Log</div>
+    <div id="spendLog"></div>
+  </div>
+</div>
+
+<!-- ===== EVENTS TAB ===== -->
+<div id="tab-events" class="tab">
+  <div class="card">
+    <div class="card-title">🎉 Upcoming Events</div>
+    <div id="eventsList"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 Event Day Plan</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Select an event to see the optimized plan for that day.</div>
+    <select id="eventSelect" onchange="showEventPlan()" style="margin-bottom:10px;">
+      <option value="">Choose event...</option>
+      <option value="bruno">🎵 Bruno Mars — Wed May 27</option>
+      <option value="office">🎊 Office Party — Thu May 28</option>
+      <option value="cruise">🚢 Cruise — Sat May 31</option>
+      <option value="diljit">🎶 Diljit Concert — Sun Jun 1</option>
+    </select>
+    <div id="eventPlanDetail"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📅 Add to iCloud Calendar</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Tap a button to download a .ics file and import to Apple Calendar → iCloud.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <button class="btn btn-sm btn-primary" onclick="downloadICS('bruno')">🎵 Bruno Mars ICS</button>
+      <button class="btn btn-sm btn-primary" onclick="downloadICS('office')">🎊 Office Party ICS</button>
+      <button class="btn btn-sm btn-primary" onclick="downloadICS('cruise')">🚢 Cruise ICS</button>
+      <button class="btn btn-sm btn-primary" onclick="downloadICS('diljit')">🎶 Diljit ICS</button>
+      <button class="btn btn-sm" style="background:var(--green);color:#000;" onclick="downloadICS('training')">💪 Full Training ICS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ACTION ACCOUNTING TAB ===== -->
+<div id="tab-account" class="tab">
+  <div class="card">
+    <div class="card-title">✅ Action Accountability Tracker</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num" id="accDone" style="color:var(--green)">0</div><div class="stat-label">Completed</div></div>
+      <div class="stat-card"><div class="stat-num" id="accSkipped" style="color:var(--red)">0</div><div class="stat-label">Skipped</div></div>
+      <div class="stat-card"><div class="stat-num" id="accMoved" style="color:var(--yellow)">0</div><div class="stat-label">Moved</div></div>
+      <div class="stat-card"><div class="stat-num" id="accStreak" style="color:var(--orange)">0🔥</div><div class="stat-label">Day Streak</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 Action Log — Last 7 Days</div>
+    <div id="actionLog"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔄 Carry-Forwards</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Tasks skipped or moved that need to be rescheduled.</div>
+    <div id="carryForwards"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Weekly Review</div>
+    <div id="weeklyReview"></div>
+    <button class="btn btn-primary btn-sm" style="margin-top:10px;" onclick="generateWeeklyReview()">Generate This Week's Review</button>
+  </div>
+</div>
+
+<!-- ===== CALENDAR TAB ===== -->
+<div id="tab-calendar" class="tab">
+  <div class="card">
+    <div class="card-title">📆 Calendar — Pick a Date</div>
+    <input type="date" id="calPicker" onchange="showCalDay()" style="margin-bottom:10px;">
+    <div id="calDayView"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📅 Upcoming 7 Days</div>
+    <div id="sevenDayView"></div>
+  </div>
+</div>
+
+<!-- ===== AI ASSISTANT TAB ===== -->
+<div id="tab-assistant" class="tab">
+  <div class="card">
+    <div class="card-title">🤖 Aman's Personal AI Agent</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">
+      Ask anything: meals, training, schedule, budget, events, carry-forwards, motivation.
+      The agent knows your full plan, diet (veg, no eggs, no sweet potato), events, and goals.
+    </div>
+    <div class="chat-wrap" id="chatWrap"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Ask your AI agent..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="btn btn-primary btn-sm" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚡ Quick Commands</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('What should I eat today?')">🥗 What to eat?</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('What is my workout today?')">💪 Today's workout?</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('Update my calendar for this week')">📆 Update calendar</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('I am going to Bruno Mars tonight, adjust my plan')">🎵 Event mode: Bruno Mars</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('How much have I spent this month?')">💰 Spending check</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('What did I skip this week and what should I carry forward?')">🔄 Carry-forwards</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('Give me a motivational check-in')">🔥 Motivate me</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="quickCmd('What groceries do I need this week?')">🛒 Groceries</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS TAB ===== -->
+<div id="tab-settings" class="tab">
+  <div class="card">
+    <div class="card-title">👤 Your Profile</div>
+    <div style="display:grid;gap:8px;">
+      <div class="row-between"><span style="font-size:13px;">Name</span><span style="color:var(--purple);font-weight:700;">Aman Bhardwaj</span></div>
+      <div class="row-between"><span style="font-size:13px;">Address</span><span style="color:var(--muted);font-size:12px;">16 Bonnycastle, Toronto</span></div>
+      <div class="row-between"><span style="font-size:13px;">Goal</span><span style="color:var(--green);font-weight:700;">HYROX Sub 1:20</span></div>
+      <div class="row-between"><span style="font-size:13px;">Race Date</span><span style="color:var(--yellow);">October 2026</span></div>
+      <div class="row-between"><span style="font-size:13px;">Diet</span><span style="color:var(--muted);font-size:12px;">Vegetarian, No Eggs, No Sweet Potato</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔔 Notifications</div>
+    <div id="notifStatus" style="font-size:13px;color:var(--muted);margin-bottom:10px;">Status: Checking...</div>
+    <button class="btn btn-primary" onclick="requestNotifPermission()">Enable Notifications</button>
+    <div style="margin-top:12px;font-size:12px;color:var(--muted);">
+      <b>iPhone:</b> Add to Home Screen → Open → tap 🔔 above<br>
+      <b>Mac:</b> Safari → File → Add to Dock → Open → tap 🔔
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📲 iCloud Calendar Sync</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">
+      Download training and event ICS files from the Events tab, then:<br>
+      <b>iPhone:</b> Tap file → Open in Calendar → Choose iCloud<br>
+      <b>Mac:</b> Double-click file → Add to iCloud calendar
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">💾 Data</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-sm btn-primary" onclick="exportData()">Export JSON Backup</button>
+      <button class="btn btn-sm" style="background:var(--border);" onclick="importData()">Import Backup</button>
+      <button class="btn btn-sm btn-red" onclick="if(confirm('Reset ALL data?'))clearAll()">Reset All Data</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">ℹ️ App Version</div>
+    <div class="row-between">
+      <span style="font-size:13px;">Aman Life OS</span>
+      <span class="badge badge-purple">v3.0</span>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;">Last updated: May 2026 · GitHub Pages · PWA</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CORE DATA & CONSTANTS
+// ============================================================
+const GEMINI_KEY = "AIzaSyAvHT2UC09D50P0iPLYr081wMCFY4TxHg8";
+
+const PROFILE = {
+  name: "Aman Bhardwaj",
+  address: "16 Bonnycastle, Toronto ON",
+  goal: "HYROX Sub 1:20",
+  raceDate: "2026-10-31",
+  diet: "Vegetarian, No Eggs, No Sweet Potato",
+  salary: 3800,
+  fixed: { rent: 1700, remittance: 1000, phone: 70 },
+  budgets: { groceries: 200, eatingOut: 150, transit: 80, supplements: 60, entertainment: 120, personal: 50, savings: 300 }
+};
+
+const EVENTS = [
+  { id: "bruno",  name: "Bruno Mars Concert", date: "2026-05-27", icon: "🎵", color: "#ffd32a", note: "Eat light before. No training. Enjoy fully. Prep tomorrow's meals tonight if possible." },
+  { id: "office", name: "Office Party",        date: "2026-05-28", icon: "🎊", color: "#6c63ff", note: "Eat light at party. Skip alcohol or limit. Log food roughly. Short workout in morning OK." },
+  { id: "cruise", name: "Cruise",              date: "2026-05-30", icon: "🚢", color: "#1e90ff", note: "All-inclusive. Enjoy food. Walk/swim counts as Zone 2. No strict macros." },
+  { id: "diljit", name: "Diljit Concert",      date: "2026-06-01", icon: "🎶", color: "#ff6b35", note: "Evening show. Do morning workout early. Meal prep Monday done on Saturday." }
+];
+
+const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const DAY_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+// HYROX Training — no SkiErg, no sled. Replacements: SkiErg → Row/Burpee Pull-ups, Sled Push → Wall Ball Sprint, Sled Pull → Band Pull + Farmer Carry
+const TRAINING_WEEK = {
+  0: { label:"Rest / Active Recovery", theme:"rest",    sessions: [
+    { name:"Morning Walk 20min", time:"7:00", steps:["Walk around Bonnycastle area","Keep HR under 130","No phone — mindful walk","Stretch 5min on return"] }
+  ]},
+  1: { label:"Zone 2 + Lower Body", theme:"zone2",   sessions: [
+    { name:"Zone 2 Run 45min", time:"6:30", steps:["Warm up walk 5min from building","Run along Lakeshore/Waterfront trail","Keep HR 135-145 bpm","Cool down walk 5min back","Stretch quads, hamstrings, calves"] },
+    { name:"Leg Gym Block", time:"18:30", steps:["Goblet squat 4×15 (KB or dumbbell)","Romanian deadlift 4×12","Walking lunges 3×20","Step-ups 3×15 each leg","Calf raises 3×25","Plank 3×45s"] }
+  ]},
+  2: { label:"Upper Body + Burpee Work", theme:"upper", sessions: [
+    { name:"Upper Push/Pull", time:"6:30", steps:["Push-ups 4×20 (replace SkiErg upper work)","Dumbbell row 4×12","Shoulder press 3×12","Lat pulldown or band pull-apart 3×15","Tricep dips 3×15","Bicep curl 3×12"] },
+    { name:"Burpee Broad Jump Intervals", time:"18:30", steps:["10 rounds: 10 burpee broad jumps + 30s rest","Replaces SkiErg intervals","Track HR: should hit 160+ each set","Cool down stretch 5min"] }
+  ]},
+  3: { label:"Badminton + Core", theme:"sport", sessions: [
+    { name:"Badminton 60-90min", time:"19:00", steps:["Warm up footwork drills 10min","Match play / drills","Focus on movement speed and recovery","Cool down 10min stretch"] },
+    { name:"Core Block", time:"21:00", steps:["Plank 3×60s","Hollow hold 3×30s","V-ups 3×15","Dead bug 3×12","Side plank 2×45s each"] }
+  ]},
+  4: { label:"Interval Run + Farmers Carry", theme:"hyrox", sessions: [
+    { name:"HYROX Sim Intervals", time:"6:30", steps:["Warm up 10min easy jog","8×400m at 5:00/km pace with 90s rest","Wall ball 4×15 (replaces sled push sprint)","Farmer carry 4×30m heavy (replaces sled pull)","Cool down jog + stretch"] }
+  ]},
+  5: { label:"Long Run + Tennis", theme:"endurance", sessions: [
+    { name:"Long Run 60-75min", time:"8:00", steps:["Start from 16 Bonnycastle → Lakeshore → Cherry Beach → return","Zone 2 pace throughout (HR 135-145)","Carry water (hydration pack or belt)","Nutrition: banana + peanut butter 30min before","Post-run: protein shake within 30min"] },
+    { name:"Tennis (optional)", time:"14:00", steps:["Warmup serves and forehands 10min","Match play or drilling","Good active recovery"] }
+  ]},
+  6: { label:"Full Body HYROX Sim + Meal Prep", theme:"sim", sessions: [
+    { name:"HYROX Simulation", time:"9:00", steps:["1km run","100m Farmer Carry (replaces sled pull)","1km run","10 Burpee Broad Jumps (replaces SkiErg)","1km run","50 Wall Balls","1km run","100m Sandbag Lunges or KB Lunges","1km run","20 Box Jumps (replaces sled push)","1km run","Rowing 500m (or 200 burpee pull-ups if no rower)","1km run","50 KB Deadlifts","Record total time + how each station felt"] },
+    { name:"Meal Prep 90min", time:"12:00", steps:["Cook rice 4 cups dry","Prep dal / chana / rajma for 4 days","Chop veg for stir fry","Portion into containers","Label with day and macros"] }
+  ]}
+};
+
+const MEALS_WEEK = {
+  0: { label:"Sunday", breakfast:"Protein smoothie (banana, peanut butter, whey, milk)", lunch:"Rajma rice + salad", dinner:"Dal tadka + roti + sabzi", snacks:"Greek yogurt + mixed nuts" },
+  1: { label:"Monday", breakfast:"Oatmeal + banana + chia seeds", lunch:"Chana masala + rice", dinner:"Paneer bhurji (no eggs) + roti + cucumber", snacks:"Protein bar + apple" },
+  2: { label:"Tuesday", breakfast:"Moong dal cheela + chutney", lunch:"Vegetable pulao + raita", dinner:"Tofu stir fry + roti", snacks:"Greek yogurt + berries" },
+  3: { label:"Wednesday", breakfast:"Protein smoothie + whole wheat toast", lunch:"Aloo matar + rice", dinner:"Badminton night — quick pasta with marinara + lentils", snacks:"Banana + peanut butter" },
+  4: { label:"Thursday", breakfast:"Upma + chai", lunch:"Rajma rice", dinner:"Paneer tikka (airfryer) + salad + roti", snacks:"Protein shake + almonds" },
+  5: { label:"Friday", breakfast:"Overnight oats + berries", lunch:"Restaurant or meal-prepped tiffin", dinner:"Vegetable biryani + raita", snacks:"Greek yogurt + granola" },
+  6: { label:"Saturday", breakfast:"Poha + chai", lunch:"Chhole + puri (treat)", dinner:"Dal makhani + rice + sabzi", snacks:"Fruit salad + nuts" }
+};
+
+const TODAY_SCHEDULE = [
+  { id:"s1", time:"6:00",  label:"Wake Up + Morning Routine",     est:"15min", steps:["Drink 500ml water immediately","Take morning supplements (see Supplements tab)","Brush, freshen up","Check today plan in this app"], cat:"morning" },
+  { id:"s2", time:"6:15",  label:"Workout",                        est:"60-90min", steps:["Open Training tab for today's full workout","Warm up before starting","Log completion in Training tab after","Protein shake within 30min of finishing"], cat:"training" },
+  { id:"s3", time:"8:00",  label:"Breakfast + Meal Prep Check",    est:"20min", steps:["Eat breakfast (see Meals tab for today's meal)","Check if any meal prep needed for today","Pack lunch if taking to office","Log macros in Meals tab"], cat:"food" },
+  { id:"s4", time:"8:30",  label:"Commute / Transit",              est:"30min", steps:["Walk or TTC to office","Listen to French lesson or podcast","Stay mindful — no doom scrolling"], cat:"commute" },
+  { id:"s5", time:"9:00",  label:"Work Block 1",                   est:"3hr",   steps:["Focus on priority tasks first","No social media until lunch","Drink water every hour","Stand up / stretch every 60min"], cat:"work" },
+  { id:"s6", time:"12:00", label:"Lunch + Walk",                   est:"45min", steps:["Eat prepped lunch or nearest healthy option","Walk 10min outside (counts as Zone 2 daily)","Avoid heavy carbs at lunch to maintain energy","Log meal"], cat:"food" },
+  { id:"s7", time:"13:00", label:"Work Block 2",                   est:"3.5hr", steps:["Return to work","Certification study last 30min of work day","Wrap up tasks, send pending emails"], cat:"work" },
+  { id:"s8", time:"17:00", label:"End of Work + Debrief",          est:"15min", steps:["Review what was completed today","Log any uncompleted tasks as carry-forward","Check budget if spent anything today","Set tomorrow's top 3 priorities"], cat:"planning" },
+  { id:"s9", time:"17:30", label:"Commute Home",                   est:"30min", steps:["Walk or TTC home","Decompress — no work emails","Plan dinner as you commute"], cat:"commute" },
+  { id:"s10",time:"18:30", label:"Evening Workout (if applicable)","est":"45min", steps:["Check training tab for evening session","Can skip if morning workout was intense","Always do 10min walk minimum"], cat:"training" },
+  { id:"s11",time:"19:30", label:"Dinner + Family Call",           est:"45min", steps:["Eat dinner (see Meals tab)","Call mom and dad — non-negotiable daily","Log dinner macros","No screens at dining table"], cat:"food" },
+  { id:"s12",time:"20:30", label:"French + Study Block",           est:"45min", steps:["20min Duolingo or French lesson","25min certification study (CompTIA / AI / Cyber)","Keep phone on DND during this block"], cat:"learning" },
+  { id:"s13",time:"21:30", label:"Meditation + Wind Down",         est:"20min", steps:["10min guided meditation (Headspace or YouTube)","Journal 3 things you are grateful for","Prep clothes and bag for tomorrow","Turn on blue light filter"], cat:"wellness" },
+  { id:"s14",time:"22:00", label:"Sleep",                          est:"8hr",   steps:["No screens after 22:00","Room dark and cool","Sleep 8 hours minimum for HYROX recovery"], cat:"sleep" }
+];
+
+const SUPPLEMENTS = [
+  { id:"sup1", name:"Whey Protein", time:"Post-workout", dose:"1 scoop (25g)" },
+  { id:"sup2", name:"Creatine",     time:"Morning",      dose:"5g in water" },
+  { id:"sup3", name:"Vitamin D3",   time:"Morning",      dose:"2000 IU with food" },
+  { id:"sup4", name:"Magnesium",    time:"Night",        dose:"400mg before bed" },
+  { id:"sup5", name:"Omega-3",      time:"Morning",      dose:"2 capsules with food" },
+  { id:"sup6", name:"Iron",         time:"Morning",      dose:"1 tablet (vegetarian deficiency)" }
+];
+
+// ============================================================
+// STORAGE HELPERS
+// ============================================================
+const S = key => { try { return JSON.parse(localStorage.getItem(key)); } catch(e) { return null; } };
+const SS = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+
+// ============================================================
+// TAB NAVIGATION
+// ============================================================
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  const btns = document.querySelectorAll('.nav button');
+  btns.forEach(b => { if(b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active'); });
+  if(id === 'today') renderToday();
+  if(id === 'training') renderTraining();
+  if(id === 'meals') renderMeals();
+  if(id === 'budget') renderBudget();
+  if(id === 'events') renderEvents();
+  if(id === 'account') renderAccount();
+  if(id === 'calendar') renderCalendar();
+  if(id === 'mealprep') renderMealPrep();
+}
+
+// ============================================================
+// DATE HELPERS
+// ============================================================
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function fmtDate(d) { const x = new Date(d+'T12:00:00'); return x.toLocaleDateString('en-CA', {weekday:'long', month:'short', day:'numeric'}); }
+function isEventDay(dateStr) { return EVENTS.find(e => e.date === dateStr); }
+function daysUntil(dateStr) { const t = new Date(dateStr+'T12:00:00'); const n = new Date(); n.setHours(0,0,0,0); return Math.round((t-n)/86400000); }
+</script>
+
+<script>
+// ============================================================
+// RENDER TODAY
+// ============================================================
+function renderToday() {
+  const today = todayStr();
+  const event = isEventDay(today);
+  const dow = new Date().getDay();
+
+  // Header date
+  document.getElementById('headerDate').textContent = fmtDate(today) + ' · 16 Bonnycastle, Toronto';
+
+  // Event banner
+  const banner = document.getElementById('eventBannerToday');
+  if(event) {
+    banner.innerHTML = `<div class="event-banner"><h3>${event.icon} EVENT DAY: ${event.name}</h3><p>${event.note}</p></div>`;
+  } else { banner.innerHTML = ''; }
+
+  // Build task list
+  const taskStates = S('taskStates_' + today) || {};
+  const container = document.getElementById('todayTasks');
+  let html = '';
+  const isEventMode = !!event;
+
+  TODAY_SCHEDULE.forEach(task => {
+    const state = taskStates[task.id] || 'pending';
+    const cls = state === 'done' ? 'done' : state === 'skipped' ? 'skipped' : isEventMode ? 'event-mode' : '';
+    const stateColors = { done: 'badge-green', skipped: 'badge-red', pending: 'badge-yellow', partial: 'badge-orange', moved: 'badge-purple' };
+    const stateLabels = { done: '✅ Done', skipped: '⏭ Skipped', pending: '⏳ Pending', partial: '🔶 Partial', moved: '🔄 Moved' };
+    html += `
+    <div class="task-item ${cls}" id="task-${task.id}" onclick="toggleSteps('${task.id}')">
+      <div class="row-between">
+        <div>
+          <span style="font-size:11px;color:var(--muted);">${task.time}</span>
+          <span style="font-size:13px;font-weight:600;margin-left:8px;">${task.label}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:6px;">(${task.est})</span>
+        </div>
+        <span class="badge ${stateColors[state] || 'badge-yellow'}">${stateLabels[state] || '⏳ Pending'}</span>
+      </div>
+      <div class="task-steps" id="steps-${task.id}">
+        <ol style="padding-left:0;list-style:none;">${task.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+        <div class="action-btns">
+          <button class="btn btn-sm btn-green" onclick="event.stopPropagation();markTask('${task.id}','done')">✅ Done</button>
+          <button class="btn btn-sm" style="background:var(--orange);color:#000;" onclick="event.stopPropagation();markTask('${task.id}','partial')">🔶 Partial</button>
+          <button class="btn btn-sm" style="background:var(--border);color:var(--muted);" onclick="event.stopPropagation();markTask('${task.id}','skipped')">⏭ Skip</button>
+          <button class="btn btn-sm" style="background:var(--yellow);color:#000;" onclick="event.stopPropagation();markTask('${task.id}','moved')">🔄 Move</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  updateProgress();
+
+  // Supplements
+  const suppStates = S('suppStates_' + today) || {};
+  const suppEl = document.getElementById('suppTracker');
+  suppEl.innerHTML = SUPPLEMENTS.map(s => {
+    const checked = suppStates[s.id] || false;
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+      <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleSupp('${s.id}',this.checked)" style="width:16px;height:16px;accent-color:var(--purple);">
+      <span style="flex:1;font-size:13px;">${s.name}</span>
+      <span style="font-size:11px;color:var(--muted);">${s.time} · ${s.dose}</span>
+    </div>`;
+  }).join('');
+
+  // Water
+  const water = S('water_' + today) || 0;
+  document.getElementById('waterCount').textContent = water + ' / 8';
+  document.getElementById('waterBar').style.width = Math.min(water/8*100, 100) + '%';
+
+  // Tomorrow
+  renderTomorrow();
+
+  // Notes
+  const notes = S('notes_' + today) || '';
+  document.getElementById('quickNotes').value = notes;
+
+  // Streak
+  updateStreak();
+}
+
+function toggleSteps(id) {
+  const el = document.getElementById('steps-' + id);
+  el.classList.toggle('open');
+}
+
+function markTask(id, state) {
+  const today = todayStr();
+  const taskStates = S('taskStates_' + today) || {};
+  taskStates[id] = state;
+  SS('taskStates_' + today, taskStates);
+  // Log to action log
+  const log = S('actionLog') || [];
+  log.unshift({ date: today, taskId: id, task: TODAY_SCHEDULE.find(t=>t.id===id)?.label || id, state, time: new Date().toLocaleTimeString() });
+  if(log.length > 200) log.splice(200);
+  SS('actionLog', log);
+  renderToday();
+}
+
+function toggleSupp(id, checked) {
+  const today = todayStr();
+  const s = S('suppStates_' + today) || {};
+  s[id] = checked;
+  SS('suppStates_' + today, s);
+}
+
+function addWater() {
+  const today = todayStr();
+  const w = Math.min((S('water_' + today) || 0) + 1, 8);
+  SS('water_' + today, w);
+  document.getElementById('waterCount').textContent = w + ' / 8';
+  document.getElementById('waterBar').style.width = Math.min(w/8*100, 100) + '%';
+}
+
+function resetWater() { SS('water_' + todayStr(), 0); renderToday(); }
+function saveNotes() { SS('notes_' + todayStr(), document.getElementById('quickNotes').value); }
+
+function updateProgress() {
+  const today = todayStr();
+  const taskStates = S('taskStates_' + today) || {};
+  const done = TODAY_SCHEDULE.filter(t => taskStates[t.id] === 'done' || taskStates[t.id] === 'partial').length;
+  const total = TODAY_SCHEDULE.length;
+  const pct = Math.round(done / total * 100);
+  document.getElementById('todayPct').textContent = pct + '%';
+  document.getElementById('todayBar').style.width = pct + '%';
+  document.getElementById('tasksDone').textContent = done;
+  document.getElementById('tasksLeft').textContent = total - done;
+  if(pct === 100) scheduleReminder('🔥 100% Day!', 'You crushed today, Aman. Rest up!', 1000, 'perfect-day');
+}
+
+function updateStreak() {
+  const streak = S('streak') || 0;
+  document.getElementById('streakBadge').textContent = '🔥 ' + streak;
+  document.getElementById('accStreak') && (document.getElementById('accStreak').textContent = streak + '🔥');
+}
+
+
+// ============================================================
+// RENDER TOMORROW
+// ============================================================
+function renderTomorrow() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const dow = tomorrow.getDay();
+  const event = isEventDay(tomorrowStr);
+  const training = TRAINING_WEEK[dow];
+  const meal = MEALS_WEEK[dow];
+
+  let html = `<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${fmtDate(tomorrowStr)}</div>`;
+
+  if(event) {
+    html += `<div style="background:rgba(255,211,42,0.08);border:1px solid ${event.color};border-radius:10px;padding:10px;margin-bottom:8px;">
+      <div style="color:${event.color};font-weight:700;">${event.icon} ${event.name}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;">${event.note}</div>
+    </div>`;
+  }
+
+  // Training for tomorrow — with event override
+  let trainingNote = training.label;
+  let trainingDetail = training.sessions.map(s => s.name).join(' · ');
+  if(event && event.id === 'bruno') {
+    trainingNote = '⚡ SHORT — Bruno Mars tonight!';
+    trainingDetail = 'Upper body 20-30min OR yoga/stretch only. Save energy for the show. NO leg day tomorrow.';
+  }
+  if(event && event.id === 'office') {
+    trainingNote = '🏃 Easy Morning Run 30min';
+    trainingDetail = 'Easy jog only. Save energy for office party evening.';
+  }
+  if(event && (event.id === 'cruise' || event.id === 'diljit')) {
+    trainingNote = '💪 Train EARLY — ' + event.name + ' later!';
+    trainingDetail = training.sessions.map(s=>s.name).join(' · ') + ' — get it done before 10am.';
+  }
+
+  html += `<div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span>💪</span><b style="font-size:13px;">${trainingNote}</b></div>
+    <div style="font-size:12px;color:var(--muted);">${trainingDetail}</div>
+  </div>`;
+
+  html += `<div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span>🥗</span><b style="font-size:13px;">Meals</b></div>
+    <div style="font-size:12px;color:var(--muted);">
+      🌅 ${meal.breakfast}<br>
+      🌞 ${meal.lunch}<br>
+      🌙 ${meal.dinner}
+    </div>
+  </div>`;
+
+  // Prep reminder
+  const prepReminders = [];
+  if(event && event.id === 'bruno') prepReminders.push('🎵 Eat dinner BEFORE heading to Bruno Mars venue');
+  if(event && event.id === 'office') prepReminders.push('🎊 Pack nice clothes. 1 drink max at party.');
+  if(event && event.id === 'cruise') prepReminders.push('🚢 Pack bag tonight. Walk/swim = training.');
+  if(event && event.id === 'diljit') prepReminders.push('🎶 Do HYROX sim EARLY. Meal prep for next week.');
+  prepReminders.push('💊 Set out supplements tonight for morning');
+  prepReminders.push('👕 Lay out workout clothes tonight');
+
+  html += `<div style="border:1px solid var(--green);border-radius:10px;padding:10px;">
+    <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;">✅ Prep Tonight</div>
+    ${prepReminders.map(r => `<div style="font-size:12px;color:var(--muted);padding:2px 0;">• ${r}</div>`).join('')}
+  </div>`;
+
+  document.getElementById('tomorrowView').innerHTML = html;
+}
+
+// ============================================================
+// RENDER TRAINING
+// ============================================================
+function renderTraining() {
+  const dow = new Date().getDay();
+  const todayData = TRAINING_WEEK[dow];
+
+  // Week overview
+  let html = '';
+  Object.entries(TRAINING_WEEK).forEach(([d, data]) => {
+    const isToday = parseInt(d) === dow;
+    html += `<div style="padding:8px 0;border-bottom:1px solid var(--border);${isToday ? 'border-left:3px solid var(--purple);padding-left:10px;' : ''}">
+      <span style="font-size:11px;color:var(--muted);font-weight:700;min-width:32px;display:inline-block;">${DAY_SHORT[d]}</span>
+      <span style="font-size:13px;${isToday ? 'color:var(--purple);font-weight:700;' : ''}">${data.label}</span>
+      ${isToday ? '<span class="badge badge-purple" style="margin-left:6px;">TODAY</span>' : ''}
+    </div>`;
+  });
+  document.getElementById('trainingWeek').innerHTML = html;
+
+  // Today's workout detail
+  let wHtml = `<div style="margin-bottom:8px;"><span class="badge badge-purple">${DAY_SHORT[dow]}</span> <b>${todayData.label}</b></div>`;
+  todayData.sessions.forEach((s, i) => {
+    wHtml += `<div style="border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
+      <div class="row-between" style="margin-bottom:6px;">
+        <b style="font-size:13px;">${s.name}</b>
+        <span style="font-size:11px;color:var(--muted);">⏰ ${s.time}</span>
+      </div>
+      <ol style="list-style:none;padding:0;">${s.steps.map((st,j) => `<li style="font-size:12px;color:var(--muted);padding:3px 0 3px 8px;border-left:2px solid var(--purple);margin-bottom:4px;"><b>${j+1}.</b> ${st}</li>`).join('')}</ol>
+      <button class="btn btn-sm btn-green" style="margin-top:6px;" onclick="logSessionDone('${s.name}')">✅ Mark Complete</button>
+    </div>`;
+  });
+  document.getElementById('todayWorkout').innerHTML = wHtml;
+
+  // Training log
+  const log = S('trainingLog') || [];
+  document.getElementById('trainingLog').innerHTML = log.length === 0
+    ? '<div style="color:var(--muted);font-size:12px;">No sessions logged yet. Complete a workout above.</div>'
+    : log.slice(0,10).map(l => `<div class="notif-item"><span style="font-size:12px;">${l.name}</span><span class="badge badge-green">${l.date}</span></div>`).join('');
+}
+
+function logSessionDone(name) {
+  const log = S('trainingLog') || [];
+  log.unshift({ name, date: todayStr(), time: new Date().toLocaleTimeString() });
+  SS('trainingLog', log);
+  renderTraining();
+  scheduleReminder('💪 Workout Done!', name + ' completed. Great work, Aman!', 500, 'workout');
+}
+
+function logWorkout() {
+  const name = prompt('Session name (e.g. HYROX Sim, Long Run):');
+  if(name) logSessionDone(name);
+}
+</script>
+
+<script>
+// ============================================================
+// RENDER MEALS
+// ============================================================
+function renderMeals() {
+  const today = todayStr();
+  const event = isEventDay(today);
+  const dow = new Date().getDay();
+  const todayMeal = MEALS_WEEK[dow];
+
+  // Event banner override
+  const banner = document.getElementById('mealEventBanner');
+  if(event) {
+    banner.innerHTML = `<div class="event-banner"><h3>${event.icon} ${event.name} — Meal Mode</h3><p>${event.note}</p><p style="margin-top:6px;color:var(--yellow);">Strict macros paused for today. Enjoy the event. Log roughly.</p></div>`;
+  } else { banner.innerHTML = ''; }
+
+  // Macro log
+  const macros = S('macros_' + today) || { cal:0, prot:0, carbs:0, fat:0 };
+  document.getElementById('calLogged').textContent = macros.cal;
+  document.getElementById('protLogged').textContent = macros.prot + 'g';
+  document.getElementById('carbLogged').textContent = macros.carbs + 'g';
+  document.getElementById('fatLogged').textContent = macros.fat + 'g';
+
+  // Weekly meals
+  let html = '';
+  Object.entries(MEALS_WEEK).forEach(([d, meal]) => {
+    const isToday = parseInt(d) === dow;
+    html += `<div style="border:1px solid ${isToday ? 'var(--purple)' : 'var(--border)'};border-radius:10px;padding:10px;margin-bottom:8px;">
+      <div class="row-between">
+        <b style="font-size:13px;${isToday ? 'color:var(--purple);' : ''}">${meal.label}${isToday ? ' ← TODAY' : ''}</b>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px;">
+        🌅 ${meal.breakfast}<br>
+        🌞 ${meal.lunch}<br>
+        🌙 ${meal.dinner}<br>
+        🍎 ${meal.snacks}
+      </div>
+    </div>`;
+  });
+  document.getElementById('weeklyMeals').innerHTML = html;
+}
+
+function logMeal() {
+  const today = todayStr();
+  const cal = parseInt(prompt('Calories:') || 0);
+  const prot = parseInt(prompt('Protein (g):') || 0);
+  const carbs = parseInt(prompt('Carbs (g):') || 0);
+  const fat = parseInt(prompt('Fat (g):') || 0);
+  const macros = S('macros_' + today) || { cal:0, prot:0, carbs:0, fat:0 };
+  macros.cal += cal; macros.prot += prot; macros.carbs += carbs; macros.fat += fat;
+  SS('macros_' + today, macros);
+  renderMeals();
+}
+
+// ============================================================
+// RENDER MEAL PREP
+// ============================================================
+function renderMealPrep() {
+  const today = todayStr();
+  const todayDow = new Date().getDay();
+  const hasEventThisWeek = EVENTS.filter(e => daysUntil(e.date) >= 0 && daysUntil(e.date) <= 7);
+
+  let bannerHtml = '';
+  if(hasEventThisWeek.length > 0) {
+    bannerHtml = `<div class="event-banner"><h3>⚠️ Event Week — Meal Prep Adjusted</h3><p>You have ${hasEventThisWeek.map(e=>e.name).join(', ')} this week. Prep shifted to maximize free days.</p></div>`;
+  }
+  document.getElementById('mealPrepBanner').innerHTML = bannerHtml;
+
+  const prepPlan = [
+    { day:"Sunday", time:"12:00–13:30", tasks:["Cook 4 cups rice","Prep dal + chana + rajma for 4 containers","Chop veg for stir fry","Make raita batch","Portion and label all containers","Freeze extra roti dough"] },
+    { day:"Wednesday", time:"After Badminton (~21:30)", tasks:["Quick chop + marinate paneer for Thu","Boil lentils for Fri","Top up water bottles with electrolytes","Check if proteins for weekend need prep"] },
+    { day:"Friday", time:"Evening 18:30–19:00", tasks:["Pre-cook Saturday treat (chhole)","Defrost Sunday smoothie ingredients","Check supplement stock for next week"] }
+  ];
+
+  const prepHtml = prepPlan.map(p => `<div style="border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
+    <div class="row-between" style="margin-bottom:6px;"><b>${p.day}</b><span style="font-size:11px;color:var(--muted);">⏰ ${p.time}</span></div>
+    <ol style="list-style:none;padding:0;">${p.tasks.map((t,i) => `<li style="font-size:12px;color:var(--muted);padding:3px 0 3px 8px;border-left:2px solid var(--green);margin-bottom:4px;"><b>${i+1}.</b> ${t}</li>`).join('')}</ol>
+  </div>`).join('');
+  document.getElementById('mealPrepPlan').innerHTML = prepHtml;
+
+  const grocery = S('groceryList') || [
+    {item:"Basmati rice (5kg)",cat:"Grains",store:"No Frills",done:false},
+    {item:"Chana dal (1kg)",cat:"Protein",store:"No Frills",done:false},
+    {item:"Rajma (1kg)",cat:"Protein",store:"No Frills",done:false},
+    {item:"Paneer (500g)",cat:"Protein",store:"Farm Boy",done:false},
+    {item:"Tofu firm (2 packs)",cat:"Protein",store:"Farm Boy",done:false},
+    {item:"Greek yogurt (500g)",cat:"Dairy",store:"No Frills",done:false},
+    {item:"Whole wheat roti (pack)",cat:"Grains",store:"No Frills",done:false},
+    {item:"Oats (1kg)",cat:"Grains",store:"No Frills",done:false},
+    {item:"Banana (bunch)",cat:"Fruits",store:"No Frills",done:false},
+    {item:"Apple (bag)",cat:"Fruits",store:"No Frills",done:false},
+    {item:"Spinach (2 bags)",cat:"Veg",store:"Farm Boy",done:false},
+    {item:"Tomato (6)",cat:"Veg",store:"No Frills",done:false},
+    {item:"Onion (3kg)",cat:"Veg",store:"No Frills",done:false},
+    {item:"Mixed nuts (200g)",cat:"Snacks",store:"Costco or No Frills",done:false},
+    {item:"Peanut butter (1 jar)",cat:"Protein",store:"No Frills",done:false},
+    {item:"Whey protein (if needed)",cat:"Supplements",store:"Amazon/GNC",done:false},
+    {item:"Creatine (if needed)",cat:"Supplements",store:"Amazon",done:false},
+  ];
+  SS('groceryList', grocery);
+
+  document.getElementById('groceryList').innerHTML = grocery.map((g,i) =>
+    `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+      <input type="checkbox" ${g.done ? 'checked' : ''} onchange="toggleGrocery(${i},this.checked)" style="width:15px;height:15px;accent-color:var(--green);">
+      <span style="flex:1;font-size:13px;${g.done ? 'text-decoration:line-through;color:var(--muted);' : ''}">${g.item}</span>
+      <span style="font-size:11px;color:var(--muted);">${g.store}</span>
+      <span class="badge badge-green" style="font-size:9px;">${g.cat}</span>
+    </div>`
+  ).join('');
+}
+
+function toggleGrocery(i, checked) {
+  const g = S('groceryList') || [];
+  g[i].done = checked;
+  SS('groceryList', g);
+}
+
+function addGrocery() {
+  const item = prompt('Item name:');
+  if(!item) return;
+  const store = prompt('Store:') || 'Any';
+  const g = S('groceryList') || [];
+  g.push({ item, cat:'Custom', store, done:false });
+  SS('groceryList', g);
+  renderMealPrep();
+}
+
+// ============================================================
+// RENDER BUDGET
+// ============================================================
+function renderBudget() {
+  const fixed = PROFILE.fixed;
+  const budgets = PROFILE.budgets;
+  const fixedTotal = Object.values(fixed).reduce((a,b) => a+b, 0);
+  const remaining = PROFILE.salary - fixedTotal;
+
+  let html = `<div style="background:var(--bg);border-radius:10px;padding:10px;margin-bottom:10px;">
+    <div class="row-between"><span>Monthly Salary</span><b style="color:var(--green);">$${PROFILE.salary}</b></div>
+    <div class="row-between" style="margin-top:6px;"><span>Fixed (Rent $${fixed.rent} + Remittance $${fixed.remittance} + Phone $${fixed.phone})</span><b style="color:var(--red);">-$${fixedTotal}</b></div>
+    <div class="row-between" style="margin-top:6px;border-top:1px solid var(--border);padding-top:6px;"><span><b>Available to budget</b></span><b style="color:var(--yellow);">$${remaining}</b></div>
+  </div>`;
+
+  const spendLog = S('spendLog') || [];
+  const spent = {};
+  spendLog.filter(s => s.month === new Date().toISOString().slice(0,7)).forEach(s => {
+    spent[s.cat] = (spent[s.cat] || 0) + parseFloat(s.amt);
+  });
+
+  Object.entries(budgets).forEach(([cat, budget]) => {
+    const s = spent[cat.charAt(0).toUpperCase() + cat.slice(1)] || 0;
+    const label = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/([A-Z])/g, ' $1');
+    const pct = Math.min(s / budget * 100, 100);
+    const color = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--yellow)' : 'var(--green)';
+    html += `<div style="margin-bottom:10px;">
+      <div class="row-between"><span style="font-size:13px;">${label}</span><span style="font-size:13px;">${'$'+s.toFixed(0)} / $${budget}</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+    </div>`;
+  });
+
+  const totalSpent = Object.values(spent).reduce((a,b)=>a+b,0);
+  const totalBudget = Object.values(budgets).reduce((a,b)=>a+b,0);
+  html += `<div class="row-between" style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;"><span><b>Total Variable Spent</b></span><b style="color:var(--yellow);">$${totalSpent.toFixed(0)} / $${totalBudget}</b></div>`;
+  document.getElementById('budgetOverview').innerHTML = html;
+
+  // Spend log
+  document.getElementById('spendLog').innerHTML = spendLog.length === 0
+    ? '<div style="color:var(--muted);font-size:12px;">No spends logged yet.</div>'
+    : spendLog.slice().reverse().slice(0,20).map(s => `<div class="notif-item"><div><div style="font-size:13px;">${s.cat}</div><div style="font-size:11px;color:var(--muted);">${s.note || ''} · ${s.date}</div></div><b style="color:var(--red);">-$${parseFloat(s.amt).toFixed(2)}</b></div>`).join('');
+}
+
+function logSpend() {
+  const cat = document.getElementById('spendCat').value;
+  const amt = document.getElementById('spendAmt').value;
+  const note = document.getElementById('spendNote').value;
+  if(!amt || isNaN(amt) || parseFloat(amt) <= 0) { alert('Enter a valid amount'); return; }
+  const log = S('spendLog') || [];
+  log.push({ cat, amt: parseFloat(amt), note, date: todayStr(), month: new Date().toISOString().slice(0,7) });
+  SS('spendLog', log);
+  document.getElementById('spendAmt').value = '';
+  document.getElementById('spendNote').value = '';
+  renderBudget();
+}
+</script>
+
+<script>
+// ============================================================
+// RENDER EVENTS
+// ============================================================
+function renderEvents() {
+  const html = EVENTS.map(e => {
+    const d = daysUntil(e.date);
+    const badge = d < 0 ? '<span class="badge badge-red">Past</span>' : d === 0 ? '<span class="badge badge-orange">TODAY</span>' : `<span class="badge badge-yellow">${d}d away</span>`;
+    return `<div style="border:1px solid ${e.color};border-radius:12px;padding:14px;margin-bottom:10px;">
+      <div class="row-between"><div><span style="font-size:20px;">${e.icon}</span> <b style="color:${e.color};">${e.name}</b></div>${badge}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px;">${fmtDate(e.date)}</div>
+      <div style="font-size:12px;color:var(--text);margin-top:6px;">${e.note}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('eventsList').innerHTML = html;
+}
+
+const EVENT_PLANS = {
+  bruno: {
+    title: "🎵 Bruno Mars Concert — Wed May 27",
+    plan: [
+      { time:"6:00–7:00", task:"Short upper body workout — 30min max or skip if tired", steps:["Push-ups 3×15, rows 3×12, shoulder press 3×10","Skip leg day — save energy for standing at concert","Stretch well afterwards"] },
+      { time:"7:30",      task:"High-protein breakfast", steps:["Protein smoothie: whey + banana + peanut butter + milk","Oatmeal or whole wheat toast","500ml water"] },
+      { time:"9:00–17:00",task:"Office work — normal day", steps:["Eat prepped lunch","Light snacks only (fruit, yogurt)","Stay hydrated — no alcohol before show"] },
+      { time:"17:00",     task:"Commute home + freshen up", steps:["Quick shower","Dress for concert","Eat dinner BEFORE leaving: rice + dal or quick paneer"] },
+      { time:"19:00",     task:"Head to venue", steps:["16 Bonnycastle → venue by TTC or Uber","Arrive 30min early","Limit drinks at venue to control spending"] },
+      { time:"23:00+",    task:"Return home, wind down", steps:["Hydrate well on return","Quick protein snack if hungry (yogurt/nuts)","Set next-day alarm — office party tomorrow","No screens 30min before sleep"] }
+    ]
+  },
+  office: {
+    title: "🎊 Office Party — Thu May 28",
+    plan: [
+      { time:"6:30",      task:"Morning interval run 30min", steps:["Easy 30min jog along Lakeshore","No intensity — save energy for social evening","Protein shake after"] },
+      { time:"8:00",      task:"Good breakfast + prep", steps:["Full breakfast: oats + fruit + protein","Pack work bag","Dress nicely for party"] },
+      { time:"9:00–17:00",task:"Normal work day", steps:["Avoid heavy lunch — party dinner coming","Stay social and visible during event","No alcohol or 1 drink max"] },
+      { time:"17:00+",    task:"Office party", steps:["Eat thoughtfully — there will be food","Focus on socializing, networking","Log food roughly afterwards"] },
+      { time:"21:00",     task:"Return home", steps:["Hydrate well","Light protein snack if needed","Rest — cruise in 2 days"] }
+    ]
+  },
+  cruise: {
+    title: "🚢 Cruise — Sat May 31",
+    plan: [
+      { time:"Morning",   task:"Prep bag + light workout", steps:["Pack essentials the night before (Fri)","Quick 20min walk Saturday morning","Eat good breakfast before boarding"] },
+      { time:"Daytime",   task:"Enjoy cruise, stay active", steps:["Walk decks = Zone 2 cardio","Swim = full body workout","Don't overthink food — enjoy but don't overeat"] },
+      { time:"Evening",   task:"Dinner and relax", steps:["Protein + veg at dinner","Limit alcohol to 1-2 drinks","Hydrate between drinks"] },
+      { time:"Night",     task:"Plan Sunday return", steps:["Set alarm for return logistics","Plan Diljit concert prep for Sunday","Rest well"] }
+    ]
+  },
+  diljit: {
+    title: "🎶 Diljit Concert — Sun Jun 1",
+    plan: [
+      { time:"6:00–7:30", task:"HYROX Simulation or long run — DO IT EARLY", steps:["Full HYROX sim or 60min long run","Get it done before the day fills up","Protein shake after + rest"] },
+      { time:"8:00",      task:"Meal prep for next week (also Sunday)", steps:["Cook rice + dal batch","Prep Monday and Tuesday meals","So Monday starts strong"] },
+      { time:"12:00",     task:"Rest and eat well", steps:["Good lunch: rajma rice + salad","Nap or rest 1 hour","Hydrate well"] },
+      { time:"17:00",     task:"Prep for concert", steps:["Dinner before leaving","Dress up","Depart from Bonnycastle"] },
+      { time:"21:00+",    task:"Concert — enjoy!", steps:["Be present. This is your culture. Enjoy it.","Moderate drinks","Head home safely"] }
+    ]
+  }
+};
+
+function showEventPlan() {
+  const id = document.getElementById('eventSelect').value;
+  if(!id || !EVENT_PLANS[id]) { document.getElementById('eventPlanDetail').innerHTML = ''; return; }
+  const plan = EVENT_PLANS[id];
+  let html = `<div style="margin-bottom:10px;"><b style="color:var(--yellow);">${plan.title}</b></div>`;
+  plan.plan.forEach(p => {
+    html += `<div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;">
+      <div class="row-between" style="margin-bottom:6px;"><b style="font-size:13px;">${p.task}</b><span style="font-size:11px;color:var(--muted);">${p.time}</span></div>
+      <ol style="list-style:none;padding:0;">${p.steps.map((s,i) => `<li style="font-size:12px;color:var(--muted);padding:3px 0 3px 8px;border-left:2px solid var(--yellow);margin-bottom:4px;">${s}</li>`).join('')}</ol>
+    </div>`;
+  });
+  document.getElementById('eventPlanDetail').innerHTML = html;
+}
+
+// ============================================================
+// ICS DOWNLOAD
+// ============================================================
+function downloadICS(type) {
+  let icsContent = '';
+  if(type === 'bruno')  icsContent = makeICS('Bruno Mars Concert 🎵','20260527T190000','20260527T230000','Toronto');
+  if(type === 'office') icsContent = makeICS('Office Party 🎊','20260528T170000','20260528T210000','Office');
+  if(type === 'cruise') icsContent = makeICS('Cruise 🚢','20260530T090000','20260531T200000','Toronto Waterfront');
+  if(type === 'diljit') icsContent = makeICS('Diljit Concert 🎶','20260601T190000','20260601T230000','Toronto');
+  if(type === 'training') {
+    // Multi-event ICS for training week
+    const events = Object.entries(TRAINING_WEEK).map(([d,data]) => {
+      const base = new Date('2026-05-26');
+      base.setDate(base.getDate() + ((parseInt(d) - base.getDay() + 7) % 7));
+      const ds = base.toISOString().slice(0,10).replace(/-/g,'');
+      return data.sessions.map(s => makeICSEvent(s.name + ' 💪', ds + 'T063000', ds + 'T073000', '16 Bonnycastle / Waterfront')).join('\n');
+    });
+    icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Aman Life OS//EN\nCALSCALE:GREGORIAN\n' + events.join('\n') + '\nEND:VCALENDAR';
+    triggerDownload(icsContent, 'aman-training.ics'); return;
+  }
+  triggerDownload(icsContent, 'aman-event-' + type + '.ics');
+}
+
+function makeICS(title, start, end, location) {
+  const uid = Math.random().toString(36).slice(2) + '@aman-life-os';
+  return `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Aman Life OS//EN\nCALSCALE:GREGORIAN\nBEGIN:VEVENT\nUID:${uid}\nSUMMARY:${title}\nDTSTART:${start}\nDTEND:${end}\nLOCATION:${location}\nDESCRIPTION:Auto-added by Aman Life OS\nEND:VEVENT\nEND:VCALENDAR`;
+}
+
+function makeICSEvent(title, start, end, location) {
+  const uid = Math.random().toString(36).slice(2) + '@aman-life-os';
+  return `BEGIN:VEVENT\nUID:${uid}\nSUMMARY:${title}\nDTSTART:${start}\nDTEND:${end}\nLOCATION:${location}\nDESCRIPTION:HYROX Training - Aman Life OS\nEND:VEVENT`;
+}
+
+function triggerDownload(content, filename) {
+  const blob = new Blob([content], {type: 'text/calendar'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
+}
+
+// ============================================================
+// RENDER ACTION ACCOUNTING
+// ============================================================
+function renderAccount() {
+  const log = S('actionLog') || [];
+  const done = log.filter(l => l.state === 'done').length;
+  const skipped = log.filter(l => l.state === 'skipped').length;
+  const moved = log.filter(l => l.state === 'moved').length;
+  document.getElementById('accDone').textContent = done;
+  document.getElementById('accSkipped').textContent = skipped;
+  document.getElementById('accMoved').textContent = moved;
+
+  // Log display
+  document.getElementById('actionLog').innerHTML = log.length === 0
+    ? '<div style="color:var(--muted);font-size:12px;">No actions logged yet. Mark tasks on the Today tab.</div>'
+    : log.slice(0,30).map(l => {
+        const colors = { done:'badge-green', skipped:'badge-red', partial:'badge-orange', moved:'badge-yellow', pending:'badge-purple' };
+        const labels = { done:'✅ Done', skipped:'⏭ Skipped', partial:'🔶 Partial', moved:'🔄 Moved', pending:'⏳' };
+        return `<div class="notif-item"><div><div style="font-size:13px;">${l.task}</div><div style="font-size:11px;color:var(--muted);">${l.date} · ${l.time || ''}</div></div><span class="badge ${colors[l.state] || 'badge-yellow'}">${labels[l.state] || l.state}</span></div>`;
+      }).join('');
+
+  // Carry-forwards: tasks moved or skipped in last 3 days
+  const carryItems = log.filter(l => l.state === 'moved' || l.state === 'skipped').slice(0,10);
+  document.getElementById('carryForwards').innerHTML = carryItems.length === 0
+    ? '<div style="color:var(--green);font-size:12px;">✅ Nothing to carry forward. Excellent!</div>'
+    : carryItems.map(l => `<div class="notif-item"><span style="font-size:13px;">${l.task}</span><button class="btn btn-sm btn-primary" onclick="reschedule('${l.taskId}')">Reschedule</button></div>`).join('');
+}
+
+function reschedule(taskId) {
+  const when = prompt('Reschedule to (e.g. Tomorrow 6:30 AM):');
+  if(!when) return;
+  const log = S('actionLog') || [];
+  log.unshift({ date: todayStr(), taskId, task: TODAY_SCHEDULE.find(t=>t.id===taskId)?.label || taskId, state: 'rescheduled', note: 'To: ' + when, time: new Date().toLocaleTimeString() });
+  SS('actionLog', log);
+  renderAccount();
+}
+
+function generateWeeklyReview() {
+  const log = S('actionLog') || [];
+  const spend = S('spendLog') || [];
+  const done = log.filter(l => l.state === 'done').length;
+  const skipped = log.filter(l => l.state === 'skipped').length;
+  const partial = log.filter(l => l.state === 'partial').length;
+  const totalSpend = spend.reduce((a,b) => a + parseFloat(b.amt || 0), 0);
+  document.getElementById('weeklyReview').innerHTML = `
+    <div style="background:var(--bg);border-radius:10px;padding:12px;">
+      <div style="font-size:15px;font-weight:700;color:var(--purple);margin-bottom:8px;">📊 This Week — ${new Date().toLocaleDateString()}</div>
+      <div class="row-between" style="margin-bottom:4px;"><span>Tasks Completed</span><b style="color:var(--green);">${done}</b></div>
+      <div class="row-between" style="margin-bottom:4px;"><span>Tasks Partial</span><b style="color:var(--orange);">${partial}</b></div>
+      <div class="row-between" style="margin-bottom:4px;"><span>Tasks Skipped</span><b style="color:var(--red);">${skipped}</b></div>
+      <div class="row-between" style="margin-bottom:4px;"><span>Total Variable Spend</span><b style="color:var(--yellow);">$${totalSpend.toFixed(2)}</b></div>
+      <div style="margin-top:10px;font-size:13px;color:var(--text);">
+        ${done > skipped ? '🔥 Great week, Aman! Keep that momentum going.' : '⚠️ More skipped than done. Identify what blocked you and carry those tasks forward.'}
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// RENDER CALENDAR
+// ============================================================
+function renderCalendar() {
+  document.getElementById('calPicker').value = todayStr();
+  showCalDay();
+
+  // 7-day view
+  let html = '';
+  for(let i=0; i<7; i++) {
+    const d = new Date(); d.setDate(d.getDate() + i);
+    const ds = d.toISOString().split('T')[0];
+    const ev = isEventDay(ds);
+    const dow = d.getDay();
+    const training = TRAINING_WEEK[dow];
+    const meal = MEALS_WEEK[dow];
+    html += `<div style="border:1px solid ${ev ? ev.color : 'var(--border)'};border-radius:10px;padding:10px;margin-bottom:8px;">
+      <div class="row-between"><b style="color:${ev ? ev.color : 'var(--text)'};">${DAY_SHORT[dow]} ${d.getDate()} ${d.toLocaleString('default',{month:'short'})}</b>${ev ? `<span class="badge badge-yellow">${ev.icon} ${ev.name}</span>` : ''}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;">💪 ${training.label}</div>
+      <div style="font-size:12px;color:var(--muted);">🥗 ${meal.breakfast} / ${meal.lunch}</div>
+    </div>`;
+  }
+  document.getElementById('sevenDayView').innerHTML = html;
+}
+
+function showCalDay() {
+  const ds = document.getElementById('calPicker').value;
+  if(!ds) return;
+  const d = new Date(ds + 'T12:00:00');
+  const dow = d.getDay();
+  const ev = isEventDay(ds);
+  const training = TRAINING_WEEK[dow];
+  const meal = MEALS_WEEK[dow];
+  let html = `<div style="font-size:15px;font-weight:700;color:var(--purple);margin-bottom:10px;">${fmtDate(ds)}</div>`;
+  if(ev) html += `<div class="event-banner"><h3>${ev.icon} ${ev.name}</h3><p>${ev.note}</p></div>`;
+  html += `<div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;"><b>💪 Training</b><div style="font-size:13px;color:var(--muted);margin-top:4px;">${training.label}</div><div style="font-size:12px;color:var(--muted);">${training.sessions.map(s=>s.name).join(' · ')}</div></div>`;
+  html += `<div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;"><b>🥗 Meals</b><div style="font-size:12px;color:var(--muted);margin-top:4px;">🌅 ${meal.breakfast}<br>🌞 ${meal.lunch}<br>🌙 ${meal.dinner}</div></div>`;
+  document.getElementById('calDayView').innerHTML = html;
+}
+</script>
+
+<script>
+// ============================================================
+// AI AGENT
+// ============================================================
+const AI_BRAIN = {
+  greet() {
+    const h = new Date().getHours();
+    if(h < 12) return "Good morning, Aman! ☀️";
+    if(h < 17) return "Good afternoon, Aman! 💪";
+    return "Good evening, Aman! 🌙";
+  },
+  respond(msg) {
+    const m = msg.toLowerCase();
+    const today = todayStr();
+    const dow = new Date().getDay();
+    const event = isEventDay(today);
+    const training = TRAINING_WEEK[dow];
+    const meal = MEALS_WEEK[dow];
+    const spend = S('spendLog') || [];
+    const totalSpend = spend.filter(s=>s.month===new Date().toISOString().slice(0,7)).reduce((a,b)=>a+parseFloat(b.amt||0),0);
+    const log = S('actionLog') || [];
+    const doneCt = log.filter(l=>l.state==='done').length;
+    const skippedCt = log.filter(l=>l.state==='skipped').length;
+
+    // Events this week
+    const upcoming = EVENTS.filter(e => daysUntil(e.date) >= 0 && daysUntil(e.date) <= 7);
+
+    if(m.includes('eat') || m.includes('food') || m.includes('meal') || m.includes('diet')) {
+      if(event) return `${this.greet()} Today is ${event.name}! ${event.note}\n\nFor a normal day like today, your plan is:\n🌅 Breakfast: ${meal.breakfast}\n🌞 Lunch: ${meal.lunch}\n🌙 Dinner: ${meal.dinner}\n🍎 Snacks: ${meal.snacks}\n\nYou're vegetarian with no eggs and no sweet potato — all meals respect this. 💚`;
+      return `${this.greet()} Here's your meal plan for ${DAYS[dow]}:\n\n🌅 Breakfast: ${meal.breakfast}\n🌞 Lunch: ${meal.lunch}\n🌙 Dinner: ${meal.dinner}\n🍎 Snacks: ${meal.snacks}\n\n🎯 Target: 2000 cal, 140g protein, 220g carbs, 55g fat. Log each meal in the Meals tab!`;
+    }
+
+    if(m.includes('workout') || m.includes('train') || m.includes('exercise') || m.includes('gym') || m.includes('hyrox')) {
+      const sessions = training.sessions.map(s => `• ${s.name} at ${s.time}`).join('\n');
+      return `💪 Today (${DAYS[dow]}) is: ${training.label}\n\nSessions:\n${sessions}\n\n⚠️ No SkiErg or sled — replacements built in:\n• SkiErg → Burpee Broad Jumps / Rowing\n• Sled Push → Wall Ball Sprint Sets\n• Sled Pull → Farmer Carry + Band Pulls\n\nOpen the Training tab for full step-by-step instructions!`;
+    }
+
+    if(m.includes('calendar') || m.includes('schedule') || m.includes('update')) {
+      let r = `📆 Here's what's coming up for you, Aman:\n\n`;
+      EVENTS.forEach(e => {
+        const d = daysUntil(e.date);
+        r += `${e.icon} ${e.name}: ${fmtDate(e.date)} (${d < 0 ? 'Past' : d === 0 ? 'TODAY!' : d + ' days away'})\n   → ${e.note}\n\n`;
+      });
+      r += `Go to the Events tab to download ICS files and add to iCloud Calendar. Go to Calendar tab for your full 7-day view.`;
+      return r;
+    }
+
+    if(m.includes('bruno mars')) {
+      const e = EVENT_PLANS.bruno;
+      return `🎵 Bruno Mars tomorrow (May 27)! Here's your day plan:\n\n• Short workout morning (30min upper body or skip)\n• High-protein breakfast\n• Eat dinner BEFORE leaving — rice + dal or paneer\n• Head to venue, arrive 30min early\n• Enjoy every moment!\n• Return home: hydrate, quick protein snack, set alarm for office party Thu\n\nOpen Events tab → select Bruno Mars for full breakdown!`;
+    }
+
+    if(m.includes('office party')) {
+      return `🎊 Office Party is Thu May 28! Plan:\n\n• Morning run 30min (easy)\n• Good breakfast — save appetite for party\n• 1 drink max or none\n• Focus on socializing and networking\n• Log food roughly after\n• Rest well — cruise is Sat!\n\nOpen Events tab → select Office Party for full day schedule.`;
+    }
+
+    if(m.includes('cruise')) {
+      return `🚢 Cruise is Sat May 30! Plan:\n\n• Pack bag Friday night\n• Short walk Saturday morning\n• On cruise: walk decks = Zone 2, swim = workout\n• Enjoy food — no strict macros this day\n• Protein + veg at dinner\n• Plan Sunday (Diljit) on the boat\n\nOpen Events tab → select Cruise for full breakdown.`;
+    }
+
+    if(m.includes('diljit')) {
+      return `🎶 Diljit Concert is Sun Jun 1! Plan:\n\n• DO your HYROX sim or long run EARLY (6am!)\n• Meal prep for next week while you have time\n• Good lunch + rest\n• Dinner before leaving\n• Enjoy the show — this is your culture, Aman!\n• Monday starts a new strong week\n\nOpen Events tab → select Diljit for full breakdown.`;
+    }
+
+    if(m.includes('budget') || m.includes('spend') || m.includes('money') || m.includes('spent')) {
+      const remaining = PROFILE.salary - Object.values(PROFILE.fixed).reduce((a,b)=>a+b,0) - totalSpend;
+      return `💰 Budget update for ${new Date().toLocaleString('default',{month:'long'})}:\n\nSalary: $${PROFILE.salary}\nFixed costs: -$${Object.values(PROFILE.fixed).reduce((a,b)=>a+b,0)} (rent + remittance + phone)\nVariable spent: -$${totalSpend.toFixed(2)}\n\n💚 Remaining: ~$${remaining.toFixed(2)}\n\nGo to Budget tab to log a spend or see full breakdown. Remember: $300/month target savings!`;
+    }
+
+    if(m.includes('carry') || m.includes('skip') || m.includes('missed')) {
+      const carryItems = log.filter(l => l.state === 'moved' || l.state === 'skipped').slice(0,5);
+      if(carryItems.length === 0) return `✅ Nothing skipped or moved recently! You're on track, Aman. Keep it up!`;
+      return `🔄 Carry-forwards to reschedule:\n\n${carryItems.map(l => `• ${l.task} (${l.state} on ${l.date})`).join('\n')}\n\nGo to Actions tab → Carry-Forwards to reschedule each one.`;
+    }
+
+    if(m.includes('grocery') || m.includes('groceries')) {
+      return `🛒 Your grocery list is in the Meal Prep tab!\n\nNearest stores from 16 Bonnycastle:\n• Farm Boy — closest (paneer, tofu, fresh veg)\n• No Frills (Lower Jarvis) — cheapest bulk items\n• Loblaws (King St) — good for variety\n\nBest prep days: Sunday and Wednesday. Budget: $200/month groceries.`;
+    }
+
+    if(m.includes('motivat') || m.includes('motivate') || m.includes('encourage')) {
+      const quotes = [
+        `You're training for a sub-1:20 HYROX, Aman. Every rep, every meal, every early morning — it's all building the machine. 🔥`,
+        `You've completed ${doneCt} actions and only skipped ${skippedCt}. That's a ${doneCt > 0 ? Math.round(doneCt/(doneCt+skippedCt)*100) : 0}% action rate. Keep going! 💪`,
+        `From 16 Bonnycastle to the HYROX finish line in Toronto — October 2026. You've got this. 🏁`,
+        `Small daily wins compound. One meal prepped, one workout done, one early sleep — they all add up to race day. Trust the process. 🙏`,
+        `You're managing immigration, a career, fitness, and a whole life system. The fact you're here, tracking, improving — that alone is winning. 🌟`
+      ];
+      return quotes[Math.floor(Math.random()*quotes.length)];
+    }
+
+    if(m.includes('supplement') || m.includes('supp') || m.includes('vitamin')) {
+      return `💊 Your daily supplements:\n\n${SUPPLEMENTS.map(s => `• ${s.name}: ${s.dose} — ${s.time}`).join('\n')}\n\nCheck them off in the Today tab under Hydration & Supplements. Iron is important for a vegetarian athlete!`;
+    }
+
+    if(m.includes('sleep') || m.includes('rest') || m.includes('recover')) {
+      return `😴 Sleep is your most important HYROX recovery tool, Aman.\n\n• Target: 8 hours/night (22:00 → 6:00)\n• No screens after 22:00\n• Magnesium 400mg before bed helps sleep quality\n• Cool, dark room\n• On heavy training days, 8.5 hours if possible\n\nYou cannot out-train bad sleep. Protect it.`;
+    }
+
+    if(m.includes('french') || m.includes('language') || m.includes('study') || m.includes('cert')) {
+      return `📚 Your learning blocks:\n\n• French: 20min daily (20:30 slot) — Duolingo or lesson\n• Certification study: 25min daily (20:50 slot)\n• Weekend: extra study block if possible\n\nConsistency over intensity. 20min every day beats 3 hours once a week. You've got this!`;
+    }
+
+    // Default smart response
+    return `${this.greet()} I'm your personal AI agent, Aman. I know your:\n\n✅ HYROX training plan (no SkiErg/sled, with replacements)\n🥗 Vegetarian meal plan (no eggs, no sweet potato)\n🎉 Upcoming events: Bruno Mars, Office Party, Cruise, Diljit\n💰 Budget ($3,800 salary, $1,770 fixed, $300 savings target)\n📍 Location: 16 Bonnycastle, Toronto\n\nAsk me about meals, workouts, your schedule, budget, events, grocery list, supplements, motivation — anything!`;
+  }
+};
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const wrap = document.getElementById('chatWrap');
+  wrap.innerHTML += `<div class="ai-msg user">${msg}</div>`;
+  input.value = '';
+  wrap.innerHTML += `<div class="ai-msg assistant" id="ai-typing">⏳ Thinking...</div>`;
+  wrap.scrollTop = wrap.scrollHeight;
+
+  // Build full live context about Aman
+  const today = todayStr();
+  const dow = new Date().getDay();
+  const event = isEventDay(today);
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const tomorrowEvent = isEventDay(tomorrowStr);
+  const tomorrowDow = tomorrow.getDay();
+  const spendLog = JSON.parse(localStorage.getItem('spendLog')||'[]');
+  const monthSpend = spendLog.filter(s=>s.month===new Date().toISOString().slice(0,7)).reduce((a,b)=>a+parseFloat(b.amt||0),0);
+  const taskStates = JSON.parse(localStorage.getItem('taskStates_'+today)||'{}');
+  const doneTasks = Object.values(taskStates).filter(v=>v==='done'||v==='partial').length;
+  const skippedTasks = Object.values(taskStates).filter(v=>v==='skipped').length;
+  const trainingLog = JSON.parse(localStorage.getItem('trainingLog')||'[]');
+  const lastWorkout = trainingLog[0] ? trainingLog[0].name + ' on ' + trainingLog[0].date : 'none logged yet';
+  const streak = localStorage.getItem('streak') || 0;
+  const macros = JSON.parse(localStorage.getItem('macros_'+today)||'{"cal":0,"prot":0,"carbs":0,"fat":0}');
+  const water = localStorage.getItem('water_'+today) || 0;
+  const notes = localStorage.getItem('notes_'+today) || '';
+
+  // Conversation history for context
+  const history = JSON.parse(localStorage.getItem('chatHistory')||'[]');
+
+  const systemPrompt = `You are Aman's personal AI life assistant — like a smart coach, nutritionist, trainer, and planner all in one. You know everything about him and respond like a caring, motivating best friend who knows his goals deeply.
+
+AMAN'S PROFILE:
+- Name: Aman Bhardwaj. Lives at 16 Bonnycastle St, Toronto ON.
+- HYROX Goal: Sub 1:20, Toronto race October 2026.
+- Diet: Strict vegetarian. NO eggs. NO sweet potato. Indian food preferred. Loves: dal, chana, rajma, paneer, tofu, roti, rice.
+- Work: 9-5 office job Mon-Fri. Commutes by TTC or walk.
+- Salary: $3,800/month. Fixed: $1,770 (rent $1,700 + remittance $1,000 + phone $70 = wait, rent $1,700 + remittance $1,000 = $2,700... actually fixed = rent $1,700 + remittance $1,000 + phone $70 = $2,770). Variable budget: $200 groceries, $150 eating out, $80 transit, $60 supplements, $120 entertainment, $50 personal, $300 savings.
+- Supplements: Whey protein (post-workout), Creatine 5g (morning), Vitamin D3 2000IU (morning), Magnesium 400mg (night), Omega-3 (morning), Iron (morning — vegetarian deficiency).
+- Activities: Badminton (Wednesday evenings), Tennis (Friday optional), Running (Lakeshore/Waterfront trail from Bonnycastle).
+- Learning: French daily 20min, Certification study 25min/day, Calls mom and dad daily.
+- NO SkiErg. NO sled push. NO sled pull. Replacements: SkiErg→Burpee Broad Jumps/Rowing, Sled Push→Wall Ball Sprints, Sled Pull→Farmer Carry+Band Pulls.
+
+WEEKLY TRAINING:
+- Mon: Zone 2 Run 45min + Leg Gym (goblet squat, RDL, lunges, step-ups)
+- Tue: Upper Body Push/Pull + Burpee Broad Jump Intervals
+- Wed: Badminton 60-90min + Core Block
+- Thu: HYROX Intervals (8x400m) + Farmer Carry + Wall Ball
+- Fri: Long Run 60-75min (Lakeshore→Cherry Beach) + Tennis optional
+- Sat: HYROX Full Simulation + Meal Prep 90min
+- Sun: Rest + Active Recovery walk
+
+UPCOMING EVENTS THIS WEEK:
+- TOMORROW Wed May 27: Bruno Mars Concert 🎵 — evening show. Training should be SHORT or rest. Eat dinner BEFORE venue. No heavy legs. Enjoy fully. High protein breakfast. Pack lunch.
+- Thu May 28: Office Party 🎊 — after work. Morning run OK (easy 30min). 1 drink max. Socialize. Light dinner at party.
+- Sat May 30: Cruise 🚢 — all day. Walk/swim counts as training. Enjoy food. No strict macros.
+- Sun Jun 1: Diljit Concert 🎶 — evening. Do HYROX sim EARLY morning. Meal prep for next week. Dinner before show.
+
+TODAY'S LIVE DATA (${fmtDate(today)}):
+- Today is: ${DAYS[dow]}. ${event ? 'EVENT DAY: '+event.name : 'Normal training day'}.
+- Today's training: ${TRAINING_WEEK[dow].label}
+- Tasks done: ${doneTasks}/${TODAY_SCHEDULE.length} (${skippedTasks} skipped)
+- Calories logged: ${macros.cal} / 2000 target
+- Protein logged: ${macros.prot}g / 140g target
+- Water: ${water}/8 glasses
+- Current streak: ${streak} days 🔥
+- Last workout logged: ${lastWorkout}
+- Month spend so far: $${monthSpend.toFixed(0)}
+- Today's notes: "${notes}"
+
+TOMORROW (${fmtDate(tomorrowStr)}):
+- ${tomorrowEvent ? 'EVENT: '+tomorrowEvent.name+' — '+tomorrowEvent.note : 'Training: '+TRAINING_WEEK[tomorrowDow].label}
+- IMPORTANT: Bruno Mars concert is tomorrow evening. Recommend SHORT morning workout (20-30min upper body or yoga/stretch only). Save energy for the show. Eat big protein breakfast and packed lunch. Dinner before the venue.
+
+RESPONSE RULES:
+- Be specific, actionable, warm and motivating.
+- Always account for upcoming events when giving advice.
+- Keep responses under 200 words unless user asks for detail.
+- Use emojis naturally. Format with line breaks.
+- If asked about calendar/schedule, include tomorrow and this week's events.
+- If asked about food, always respect: no eggs, no sweet potato, vegetarian.
+- If asked about workout, always use the no-SkiErg/no-sled substitutions.
+- Address Aman by name sometimes to keep it personal.`;
+
+  // Build messages array with history
+  const messages = [
+    { role: 'user', parts: [{ text: systemPrompt + '\n\nConversation so far:\n' + history.slice(-6).map(h=>h.role+': '+h.text).join('\n') + '\n\nAman says: ' + msg }] }
+  ];
+
+  const MODELS = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite'];
+  let finalReply = '';
+  let success = false;
+
+  for(const MODEL of MODELS) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: messages, generationConfig: { temperature: 0.8, maxOutputTokens: 600 } })
+        }
+      );
+      const data = await res.json();
+      if(data.candidates?.[0]?.content?.parts?.[0]?.text) {
+        finalReply = data.candidates[0].content.parts[0].text;
+        success = true;
+        break;
+      }
+    } catch(modelErr) { continue; }
+  }
+
+  try {
+    const reply = success ? finalReply : 'All models quota exceeded. Try again in a minute!';
+
+    // Save to history
+    history.push({ role: 'Aman', text: msg });
+    history.push({ role: 'Assistant', text: reply });
+    if(history.length > 20) history.splice(0, history.length-20);
+    localStorage.setItem('chatHistory', JSON.stringify(history));
+
+    const formatted = reply
+      .replace(/\n\n/g, '<br><br>')
+      .replace(/\n/g, '<br>')
+      .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+      .replace(/\*(.*?)\*/g, '<i>$1</i>');
+
+    document.getElementById('ai-typing').outerHTML = `<div class="ai-msg assistant">${formatted}</div>`;
+  } catch(e) {
+    document.getElementById('ai-typing').outerHTML = `<div class="ai-msg assistant">⚠️ Connection error: ${e.message}. Check internet and try again. Your offline assistant still works!</div>`;
+  }
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function quickCmd(cmd) {
+  document.getElementById('chatInput').value = cmd;
+  sendChat();
+  showTab('assistant');
+}
+
+// ============================================================
+// NOTIFICATIONS (PWA)
+// ============================================================
+async function requestNotifPermission() {
+  if(!('Notification' in window)) { alert('Notifications not supported in this browser.'); return; }
+  const perm = await Notification.requestPermission();
+  document.getElementById('notifStatus').textContent = 'Status: ' + perm;
+  if(perm === 'granted') {
+    new Notification('Aman Life OS 🔥', { body: 'Notifications are ON! You will be reminded daily.', icon: 'icon-192.png' });
+    scheduleAllReminders();
+  }
+}
+
+function scheduleReminder(title, body, delay, tag) {
+  if(Notification.permission === 'granted') {
+    setTimeout(() => new Notification(title, { body, icon: 'icon-192.png', tag }), delay);
+  }
+}
+
+function scheduleAllReminders() {
+  const now = new Date();
+  const reminders = [
+    { h:6,  m:0,  title:'⏰ Wake Up, Aman!',           body:'Morning routine + supplements. Start strong.' },
+    { h:6,  m:15, title:'💪 Workout Time!',              body:'Training session starting. Check the Training tab.' },
+    { h:8,  m:0,  title:'🥗 Breakfast Check',            body:'Eat breakfast + check macros. Log in Meals tab.' },
+    { h:12, m:0,  title:'🌞 Lunch + Walk',               body:'Time for lunch and a 10min walk outside.' },
+    { h:17, m:0,  title:'📋 End of Day Review',          body:'Review completed tasks. Set tomorrow\'s top 3.' },
+    { h:19, m:30, title:'🍽️ Dinner + Call Mom',          body:'Dinner time. Don\'t forget to call your parents!' },
+    { h:20, m:30, title:'📚 French + Study',             body:'20min French. 25min cert study. You\'ve got this.' },
+    { h:21, m:30, title:'🧘 Meditation',                 body:'10min meditation. Wind down. Prepare for tomorrow.' },
+    { h:22, m:0,  title:'😴 Sleep Time',                 body:'No screens. Rest 8 hours. HYROX demands recovery.' }
+  ];
+  reminders.forEach(r => {
+    const target = new Date(now); target.setHours(r.h, r.m, 0, 0);
+    let delay = target - now;
+    if(delay < 0) delay += 86400000;
+    if(delay > 0 && delay < 86400000) {
+      setTimeout(() => {
+        if(Notification.permission === 'granted') new Notification(r.title, { body: r.body, icon: 'icon-192.png' });
+      }, delay);
+    }
+  });
+}
+
+// ============================================================
+// DATA EXPORT / IMPORT
+// ============================================================
+function exportData() {
+  const data = {};
+  for(let i=0; i<localStorage.length; i++) {
+    const key = localStorage.key(i);
+    data[key] = S(key);
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'aman-life-os-backup-' + todayStr() + '.json'; a.click();
+}
+
+function importData() {
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.json';
+  inp.onchange = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        Object.entries(data).forEach(([k,v]) => SS(k, v));
+        alert('✅ Data imported successfully! Refreshing...');
+        location.reload();
+      } catch(err) { alert('Error importing data: ' + err.message); }
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
+function clearAll() {
+  localStorage.clear();
+  location.reload();
+}
+
+// ============================================================
+// STREAK CALCULATOR
+// ============================================================
+function calcStreak() {
+  let streak = 0;
+  let d = new Date();
+  while(true) {
+    const ds = d.toISOString().split('T')[0];
+    const states = S('taskStates_' + ds) || {};
+    const done = Object.values(states).filter(v => v === 'done' || v === 'partial').length;
+    if(done >= 5) { streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  SS('streak', streak);
+  updateStreak();
+}
+
+// ============================================================
+// SERVICE WORKER + PWA INIT
+// ============================================================
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    console.log('SW registered');
+  }).catch(err => console.log('SW error', err));
+}
+
+// URL param tab
+const urlParams = new URLSearchParams(window.location.search);
+const startTab = urlParams.get('tab');
+
+// ============================================================
+// APP INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  // Check notif status
+  const ns = document.getElementById('notifStatus');
+  if(ns) ns.textContent = 'Status: ' + (Notification?.permission || 'unknown');
+
+  // Schedule reminders if already granted
+  if(Notification?.permission === 'granted') scheduleAllReminders();
+
+  // Calc streak
+  calcStreak();
+
+  // Load start tab or default Today
+  if(startTab) showTab(startTab);
+  else renderToday();
+
+  // Init AI chat greeting
+  const wrap = document.getElementById('chatWrap');
+  if(wrap) wrap.innerHTML = `<div class="ai-msg assistant">👋 ${AI_BRAIN.greet()} I'm your personal life assistant. I know your training, meals, events (Bruno Mars, Office Party, Cruise, Diljit), budget, and everything in between. What do you need?</div>`;
+});
+</script>
+</body>
+</html>

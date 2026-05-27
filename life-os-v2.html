@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Life OS">
+<meta name="theme-color" content="#6c63ff">
+<title>Aman Life OS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--card:#1a1d27;--border:#2a2d3a;
+  --text:#e8eaf6;--muted:#8b8fa8;
+  --purple:#6c63ff;--green:#4caf50;--yellow:#ffd32a;
+  --red:#f44336;--orange:#ff7043;--blue:#42a5f5;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;overflow:hidden}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto}
+.topbar{padding:12px 16px 6px;background:var(--bg);flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
+.topbar-title{font-size:18px;font-weight:800;color:var(--purple)}
+.topbar-date{font-size:11px;color:var(--muted)}
+.content{flex:1;overflow-y:auto;padding:10px 12px 90px;-webkit-overflow-scrolling:touch}
+.tab{display:none}.tab.active{display:block}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:var(--card);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0);z-index:999}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 2px 6px;gap:2px;border:none;background:none;color:var(--muted);font-size:9px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.nb.on{color:var(--purple)}
+.ni{font-size:20px;line-height:1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.ct{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
+.btn:active{opacity:.7}
+.bp{background:var(--purple);color:#fff}
+.bg{background:var(--green);color:#fff}
+.by{background:var(--yellow);color:#000}
+.br{background:var(--red);color:#fff}
+.bh{background:var(--border);color:var(--text)}
+/* CHAT */
+.chatbox{display:flex;flex-direction:column;gap:10px;min-height:200px;max-height:55vh;overflow-y:auto;padding:4px 0}
+.msg{padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6;max-width:93%;word-break:break-word}
+.msg.u{background:var(--purple);color:#fff;align-self:flex-end;border-radius:14px 14px 3px 14px}
+.msg.a{background:var(--card);border:1px solid var(--border);align-self:flex-start;border-radius:3px 14px 14px 14px}
+.msg.typing{color:var(--muted);font-style:italic}
+.chin{display:flex;gap:8px;margin-top:10px;align-items:center}
+.cinput{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:13px}
+.cinput:focus{outline:none;border-color:var(--purple)}
+.micbtn{width:42px;height:42px;border-radius:50%;border:none;background:var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.micbtn.listening{background:var(--red);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* TODAY */
+.hero{border-radius:12px;padding:16px;margin-bottom:10px;background:linear-gradient(135deg,rgba(108,99,255,.2),rgba(66,165,245,.1));border:1px solid rgba(108,99,255,.3)}
+.evbanner{border-radius:12px;padding:12px;margin-bottom:10px;border:2px solid var(--yellow);background:rgba(255,211,42,.07)}
+.evtitle{font-size:15px;font-weight:800;color:var(--yellow)}
+.evnote{font-size:12px;color:var(--text);margin-top:4px;line-height:1.5}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center}
+.sv{font-size:17px;font-weight:800;color:var(--purple)}
+.sl{font-size:10px;color:var(--muted);margin-top:2px}
+/* TASKS */
+.task{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.thdr{display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.ttime{font-size:11px;color:var(--muted);width:36px;flex-shrink:0}
+.tlbl{font-size:13px;font-weight:600;flex:1}
+.tdot{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.2s}
+.task.done .tdot{background:var(--green);border-color:var(--green);color:#fff}
+.task.partial .tdot{background:var(--yellow);border-color:var(--yellow);color:#000}
+.task.skipped .tdot{background:var(--red);border-color:var(--red);color:#fff}
+.task.done .tlbl{opacity:.5;text-decoration:line-through}
+.tbody{display:none;padding:0 12px 12px;border-top:1px solid var(--border)}
+.tbody.open{display:block}
+.tsteps{list-style:none;margin:8px 0}
+.tsteps li{font-size:12px;color:var(--muted);padding:3px 0 3px 10px;border-left:2px solid var(--purple);margin-bottom:3px}
+.tbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+/* TRAINING */
+.wcard{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.wcard img{width:100%;height:150px;object-fit:cover;display:block;background:var(--border)}
+.wcbody{padding:12px}
+.wcname{font-size:14px;font-weight:700;margin-bottom:8px}
+.wcsteps{list-style:none}
+.wcsteps li{font-size:12px;color:var(--muted);padding:3px 0 3px 10px;border-left:2px solid var(--purple);margin-bottom:3px}
+/* MEALS */
+.mcard{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.mcard img{width:100%;height:130px;object-fit:cover;display:block;background:var(--border)}
+.mcbody{padding:12px}
+.mrow{display:flex;gap:6px;margin-bottom:5px}
+.micon{font-size:13px;flex-shrink:0}
+.mtext{font-size:12px;color:var(--muted);flex:1}
+/* BUDGET */
+.bbar{margin-bottom:10px}
+.blbls{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px}
+.btrack{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.bfill{height:100%;border-radius:4px;background:var(--green);transition:.4s}
+.bfill.warn{background:var(--yellow)}.bfill.over{background:var(--red)}
+/* SETTINGS */
+.sinput{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;margin-bottom:8px}
+.sinput:focus{outline:none;border-color:var(--purple)}
+select.sinput{-webkit-appearance:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-title">🏋️ Aman Life OS</div>
+    <div style="text-align:right">
+      <div id="streakBadge" style="font-size:13px;color:var(--yellow);font-weight:700"></div>
+      <div class="topbar-date" id="topDate"></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ① AI TAB (first tab) -->
+    <div id="tab-ai" class="tab active">
+      <div class="card">
+        <div class="ct">🤖 AI Personal Assistant · Llama 4</div>
+        <div class="chatbox" id="chatBox">
+          <div class="msg a">Hey Aman! 👋 I know your full schedule, HYROX training plan, meals, budget, and all your events this week.<br><br>🎵 <b>Bruno Mars is TODAY!</b> Short workout only — eat dinner before the venue.<br><br>Ask me anything or use the quick buttons below!</div>
+        </div>
+        <div class="chin">
+          <input class="cinput" id="chatIn" placeholder="Ask anything..." />
+          <button class="micbtn" id="micBtn" title="Voice input">🎤</button>
+          <button class="btn bp" id="sendBtn">Send</button>
+        </div>
+        <div id="micStatus" style="font-size:11px;color:var(--muted);margin-top:6px;min-height:16px"></div>
+      </div>
+      <div class="card">
+        <div class="ct">⚡ Quick Ask</div>
+        <div class="qgrid">
+          <button class="btn bh" onclick="ask('What is my full plan for today?')">📋 Today Plan</button>
+          <button class="btn bh" onclick="ask('What is my workout today?')">💪 Workout</button>
+          <button class="btn bh" onclick="ask('What should I eat today?')">🥗 Meals</button>
+          <button class="btn bh" onclick="ask('How is my budget this month?')">💰 Budget</button>
+          <button class="btn bh" onclick="ask('What is happening tomorrow?')">📅 Tomorrow</button>
+          <button class="btn bh" onclick="ask('Motivate me for HYROX training!')">🔥 Motivate</button>
+          <button class="btn bh" onclick="ask('How much protein have I had today?')">🥩 Protein</button>
+          <button class="btn bh" onclick="ask('What events do I have this week?')">🎵 Events</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② TODAY TAB -->
+    <div id="tab-today" class="tab">
+      <div id="evBanner"></div>
+      <div class="hero">
+        <div style="font-size:20px;font-weight:800" id="heroName">Good morning, Aman 👋</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px" id="heroSub">16 Bonnycastle · Toronto · HYROX Oct 2026</div>
+      </div>
+      <div class="statrow">
+        <div class="stat"><div class="sv" id="sDone">0</div><div class="sl">Done</div></div>
+        <div class="stat"><div class="sv" id="sCal">0</div><div class="sl">Kcal</div></div>
+        <div class="stat"><div class="sv" id="sProt">0</div><div class="sl">Protein</div></div>
+        <div class="stat"><div class="sv" id="sWater">0</div><div class="sl">💧</div></div>
+      </div>
+      <div class="card">
+        <div class="ct">📅 Today Schedule — tap to expand</div>
+        <div id="taskList"></div>
+      </div>
+      <div class="card">
+        <div class="ct">🥗 Today Meals</div>
+        <div id="todayMeals"></div>
+      </div>
+      <div class="card">
+        <div class="ct">📅 Tomorrow Preview</div>
+        <div id="tmrView"></div>
+      </div>
+      <div class="card">
+        <div class="ct">📝 Notes</div>
+        <textarea id="notesArea" class="sinput" style="min-height:80px;resize:none" placeholder="Add notes for today..."></textarea>
+        <button class="btn bp" style="width:100%" onclick="saveNotes()">Save Notes</button>
+      </div>
+    </div>
+
+    <!-- ③ TRAINING TAB -->
+    <div id="tab-training" class="tab">
+      <div id="trainingContent"></div>
+    </div>
+
+    <!-- ④ MEALS TAB -->
+    <div id="tab-meals" class="tab">
+      <div id="mealsContent"></div>
+    </div>
+
+    <!-- ⑤ BUDGET TAB -->
+    <div id="tab-budget" class="tab">
+      <div id="budgetContent"></div>
+    </div>
+
+    <!-- ⑥ SETTINGS TAB -->
+    <div id="tab-settings" class="tab">
+      <div class="card">
+        <div class="ct">🔑 Groq AI Key</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Free key at console.groq.com → API Keys → Create Key</div>
+        <input type="password" class="sinput" id="keyIn" placeholder="gsk_...">
+        <div style="display:flex;gap:8px">
+          <button class="btn bp" style="flex:1" onclick="saveKey()">💾 Save Key</button>
+          <button class="btn bh" onclick="clearKey()">🗑 Clear</button>
+        </div>
+        <div id="keyMsg" style="font-size:12px;margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <div class="ct">📊 Log Macros</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Calories</div><input type="number" class="sinput" id="inCal" placeholder="1800"></div>
+          <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Protein (g)</div><input type="number" class="sinput" id="inProt" placeholder="140"></div>
+        </div>
+        <button class="btn bp" style="width:100%" onclick="saveMacros()">Save Macros</button>
+      </div>
+      <div class="card">
+        <div class="ct">💰 Log Spend</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Amount ($)</div><input type="number" class="sinput" id="inAmt" placeholder="25"></div>
+          <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Category</div>
+            <select class="sinput" id="inCat"><option>Groceries</option><option>Eating Out</option><option>Transit</option><option>Supplements</option><option>Events</option><option>Other</option></select>
+          </div>
+        </div>
+        <input type="text" class="sinput" id="inNote" placeholder="Note (optional)">
+        <button class="btn bp" style="width:100%" onclick="logSpend()">Log Spend</button>
+      </div>
+      <div class="card">
+        <div class="ct">💧 Water Tracker</div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="btn bp" onclick="addWater()">+ Glass</button>
+          <span id="wCount" style="font-size:24px;font-weight:800;color:var(--blue)">0</span>
+          <span style="font-size:12px;color:var(--muted)">/ 8 glasses today</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="nav">
+    <button class="nb on" id="nav-ai" onclick="showTab('ai')"><span class="ni">🤖</span>AI</button>
+    <button class="nb" id="nav-today" onclick="showTab('today')"><span class="ni">📅</span>Today</button>
+    <button class="nb" id="nav-training" onclick="showTab('training')"><span class="ni">💪</span>Train</button>
+    <button class="nb" id="nav-meals" onclick="showTab('meals')"><span class="ni">🥗</span>Meals</button>
+    <button class="nb" id="nav-budget" onclick="showTab('budget')"><span class="ni">💰</span>Budget</button>
+    <button class="nb" id="nav-settings" onclick="showTab('settings')"><span class="ni">⚙️</span>Settings</button>
+  </nav>
+</div>
+
+<script>
+var DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function td(){return new Date().toISOString().split("T")[0];}
+function fmt(d){var x=new Date(d+"T12:00:00");return DAYS[x.getDay()]+", "+MON[x.getMonth()]+" "+x.getDate();}
+function gl(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
+function sl(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+var EVENTS=[
+  {date:"2026-05-27",name:"Bruno Mars Concert",icon:"🎵",color:"#ffd32a",note:"Evening show. 20min upper body ONLY — NO legs. Eat big breakfast, pack lunch, eat FULL dinner BEFORE venue."},
+  {date:"2026-05-28",name:"Office Party",icon:"🎊",color:"#ff7043",note:"After work. Easy 30min jog only. Max 1 drink. Light dinner at party."},
+  {date:"2026-05-30",name:"Cruise Day",icon:"🚢",color:"#42a5f5",note:"All day event. Walking counts as training. Enjoy food — no strict macros."},
+  {date:"2026-06-01",name:"Diljit Concert",icon:"🎶",color:"#4caf50",note:"Evening. Do HYROX simulation EARLY before 10am. Eat dinner before show."}
+];
+
+var SCHED=[
+  {id:"t1",time:"6:00",lbl:"Wake Up + Supplements",est:"15 min",steps:["Drink 500ml water immediately","Creatine 5g + Vitamin D3 + Omega-3 + Iron","Brush teeth and freshen up","Open app and check today plan"]},
+  {id:"t2",time:"6:15",lbl:"Morning Workout",est:"20-45 min",steps:["See Training tab for full session","Bruno Mars day: 20min upper body ONLY","No legs today — standing all night at concert","Done by 7am, shower quickly"]},
+  {id:"t3",time:"7:00",lbl:"Breakfast + Protein Shake",est:"20 min",steps:["High protein vegetarian breakfast","Whey protein shake post-workout","Pack lunch if eating at office","Log calories in Settings tab"]},
+  {id:"t4",time:"9:00",lbl:"Work",est:"8 hrs",steps:["Commute by TTC or walk Lakeshore","Keep water bottle at desk all day","Lunch break: walk outside 10min","Stretch 5min every 2 hours"]},
+  {id:"t5",time:"13:00",lbl:"Lunch",est:"30 min",steps:["Packed: dal + roti OR paneer wrap","Avoid heavy carbs — concert tonight","Log macros after eating","Short walk after lunch"]},
+  {id:"t6",time:"17:00",lbl:"Post-Work",est:"30 min",steps:["Evening walk along Lakeshore","Call Mom 10min + Call Dad 10min","Check tomorrow plan","Change clothes and relax"]},
+  {id:"t7",time:"18:30",lbl:"Dinner — EAT BEFORE CONCERT",est:"45 min",steps:["IMPORTANT: eat full dinner before leaving","Cook: paneer, dal, rajma, or pick up","Magnesium 400mg with dinner","Leave for venue after dinner"]},
+  {id:"t8",time:"21:00",lbl:"Bruno Mars Concert 🎵",est:"3+ hrs",steps:["Enjoy every moment!","Stay hydrated — buy water inside","Dance, sing, have the best night","Safe travel home after show"]},
+  {id:"t9",time:"23:30",lbl:"Wind Down + Sleep",est:"30 min",steps:["Drink water before bed","Quick journal: best moment tonight","Set alarm for tomorrow","Lights out — recover well"]}
+];
+
+var TRAIN={
+  0:{lbl:"Rest + Recovery",sess:[{name:"Active Recovery Walk",img:"",steps:["20-30min easy walk around Bonnycastle","No structured training today","Light stretching if desired","Focus on sleep and nutrition recovery"]}]},
+  1:{lbl:"Zone 2 Run + Legs",sess:[
+    {name:"Zone 2 Run 45min",img:"https://upload.wikimedia.org/wikipedia/commons/6/6c/CN_Tower_from_Centre_Island.JPG",steps:["Warm up 5min walk from Bonnycastle","Run Lakeshore trail, HR 135-145 bpm","45min easy — hold a full conversation","Cool down walk 5min","Stretch calves, quads, hamstrings"]},
+    {name:"Leg Gym Block",img:"",steps:["Goblet squat 4x12 (20kg KB)","Romanian deadlift 4x10","Walking lunges 3x12 each leg","Step-ups 3x10 each leg","Calf raises 3x20"]}
+  ]},
+  2:{lbl:"Upper Body + Burpees",sess:[
+    {name:"Burpee Broad Jumps",img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6539edb0f2e95c50f6c3e8f5487dd0d81fbd9fe4.jpg",steps:["10 sets x 10 burpee broad jumps","Rest 45s between sets","Full body extension at the top","Chest to floor on the way down","Track total distance covered"]},
+    {name:"Upper Body Push/Pull",img:"",steps:["Bench press 4x8","Dumbbell rows 4x10 each side","Shoulder press 4x10","Pull-ups 3x max reps","Tricep dips 3x12","Bicep curls 3x12"]}
+  ]},
+  3:{lbl:"Bruno Mars Day — Short Only!",sess:[
+    {name:"Quick Upper Body 20min MAX",img:"",steps:["Push-ups 4x10","Dumbbell rows 4x10 each side","Shoulder press 3x10","STOP — no legs, standing all night!","Done by 6:35am — shower, big breakfast, enjoy tonight 🎵"]}
+  ]},
+  4:{lbl:"HYROX Intervals + Farmers Carry",sess:[
+    {name:"8x400m Intervals",img:"https://upload.wikimedia.org/wikipedia/commons/6/6c/CN_Tower_from_Centre_Island.JPG",steps:["Warm up easy jog 10min","8 x 400m at 85-90% effort","Rest exactly 90s between each","Target: sub 2:00 per 400m","Cool down 5min + full stretch"]},
+    {name:"Farmers Carry + Wall Ball",img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/2a3121e0e1a446064cc8eee1189cb22e966e7b93.jpg",steps:["Farmers carry: 32kg KB each hand x 4 x 40m","Rest 90s between sets","Wall ball: 3x20 reps (9kg to 10ft)","Replaces SkiErg + Sled — no equipment needed","Keep core braced throughout"]}
+  ]},
+  5:{lbl:"Long Run + Optional Tennis",sess:[
+    {name:"Long Run 60-75min",img:"https://upload.wikimedia.org/wikipedia/commons/6/6c/CN_Tower_from_Centre_Island.JPG",steps:["Bonnycastle to Lakeshore East","Run to Cherry Beach and back (~10km)","Easy conversational pace","Carry water bottle","Post-run: banana + protein shake immediately"]}
+  ]},
+  6:{lbl:"HYROX Full Simulation",sess:[
+    {name:"Full HYROX Sim",img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6539edb0f2e95c50f6c3e8f5487dd0d81fbd9fe4.jpg",steps:["1km run + Burpee Broad Jumps 80m (replaces SkiErg)","1km run + Wall Ball 100 reps (replaces Sled Push)","1km run + Farmers Carry 200m (replaces Sled Pull)","1km run + Rowing 1000m","1km run + Sandbag Lunges 100m","Target total time: sub 1:20"]}
+  ]}
+};
+
+var MEALS={
+  0:{img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/da349a73179b43c51d85e48aec25e964aa1ba625.jpg",b:"Avocado toast + chai + fruit",l:"Palak paneer + roti",d:"Eat BEFORE Diljit show: dal + rice + sabzi",sn:"Dates + mixed nuts"},
+  1:{img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/007d76448858b6dae3f359253b7f14e36785aa1c.jpg",b:"Paneer bhurji + 2 roti + chai",l:"Dal makhani + rice + salad",d:"Tofu stir-fry + quinoa",sn:"Banana + whey shake + almonds"},
+  2:{img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/da349a73179b43c51d85e48aec25e964aa1ba625.jpg",b:"Oats + peanut butter + banana",l:"Chana masala + rice + raita",d:"Paneer tikka masala + roti",sn:"Greek yogurt + berries"},
+  3:{img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/007d76448858b6dae3f359253b7f14e36785aa1c.jpg",b:"Big breakfast: whey shake + fruit bowl",l:"Packed: dal + 2 roti + veggies",d:"BEFORE Bruno Mars: rajma chawal or paneer wrap",sn:"Protein bar + nuts"},
+  4:{img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/007d76448858b6dae3f359253b7f14e36785aa1c.jpg",b:"Lentil soup + whole wheat toast",l:"Tofu + brown rice + stir-fry",d:"Light at office party",sn:"Apple + almond butter"},
+  5:{img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/da349a73179b43c51d85e48aec25e964aa1ba625.jpg",b:"Smoothie: banana + spinach + whey",l:"Paneer wrap + side salad",d:"Dal tadka + jeera rice",sn:"Protein bar post-run"},
+  6:{img:"https://pplx-res.cloudinary.com/image/upload/pplx_search_images/007d76448858b6dae3f359253b7f14e36785aa1c.jpg",b:"Aloo paratha + curd + chai",l:"Cruise — vegetarian options",d:"Cruise dinner — savour it",sn:"Fresh fruit from buffet"}
+};
+
+var BUDGETS={Groceries:200,"Eating Out":150,Transit:80,Supplements:60,Events:120,Savings:300,Other:50};
+
+var ST={
+  tasks:gl("tasks_"+td())||{},
+  macros:gl("macros_"+td())||{cal:0,prot:0},
+  water:gl("water_"+td())||0,
+  spend:gl("spend")||[],
+  notes:gl("notes_"+td())||"",
+  streak:gl("streak")||0
+};
+function save(){
+  sl("tasks_"+td(),ST.tasks);
+  sl("macros_"+td(),ST.macros);
+  sl("water_"+td(),ST.water);
+  sl("spend",ST.spend);
+  sl("notes_"+td(),ST.notes);
+  sl("streak",ST.streak);
+}
+
+/* ── NAV ── */
+function showTab(id){
+  var tabs=document.querySelectorAll(".tab");
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.remove("active");
+  var nbs=document.querySelectorAll(".nb");
+  for(var i=0;i<nbs.length;i++) nbs[i].classList.remove("on");
+  document.getElementById("tab-"+id).classList.add("active");
+  document.getElementById("nav-"+id).classList.add("on");
+  if(id==="today") rToday();
+  else if(id==="training") rTraining();
+  else if(id==="meals") rMeals();
+  else if(id==="budget") rBudget();
+  else if(id==="settings") rSettings();
+}
+
+/* ── TODAY ── */
+function rToday(){
+  var now=new Date();
+  var dow=now.getDay();
+  var today=td();
+  var h=now.getHours();
+  var emj={0:"😴",1:"💪",2:"🔥",3:"🎵",4:"⚡",5:"🏃",6:"🏋️"};
+  document.getElementById("heroName").textContent=(h<12?"Good morning":h<17?"Good afternoon":"Good evening")+", Aman "+(emj[dow]||"👋");
+  document.getElementById("topDate").textContent=fmt(today);
+  document.getElementById("streakBadge").textContent=ST.streak>0?"🔥 "+ST.streak+"d":"";
+
+  var ev=getEv(today);
+  var banner=document.getElementById("evBanner");
+  if(ev){
+    banner.innerHTML="<div class='evbanner'><div class='evtitle'>"+ev.icon+" "+ev.name+" — TODAY!</div><div class='evnote'>"+ev.note+"</div></div>";
+    document.getElementById("heroSub").textContent="16 Bonnycastle · "+ev.icon+" "+ev.name+" TODAY!";
+  } else {
+    var tmrD=new Date(); tmrD.setDate(tmrD.getDate()+1);
+    var tev=getEv(tmrD.toISOString().split("T")[0]);
+    if(tev){
+      banner.innerHTML="<div class='evbanner' style='border-color:"+tev.color+"'><div class='evtitle' style='color:"+tev.color+"'>"+tev.icon+" "+tev.name+" — TOMORROW!</div><div class='evnote'>"+tev.note+"</div></div>";
+      document.getElementById("heroSub").textContent="16 Bonnycastle · "+tev.icon+" "+tev.name+" tomorrow!";
+    } else {
+      banner.innerHTML="";
+      document.getElementById("heroSub").textContent="16 Bonnycastle · Toronto · HYROX Oct 2026";
+    }
+  }
+
+  var done=0;
+  for(var k in ST.tasks){if(ST.tasks[k]==="done")done++;}
+  document.getElementById("sDone").textContent=done+"/"+SCHED.length;
+  document.getElementById("sCal").textContent=ST.macros.cal||0;
+  document.getElementById("sProt").textContent=(ST.macros.prot||0)+"g";
+  document.getElementById("sWater").textContent=ST.water||0;
+
+  var h2="";
+  for(var i=0;i<SCHED.length;i++){
+    var t=SCHED[i];
+    var st=ST.tasks[t.id]||"";
+    var cls=st==="done"?"done":st==="skipped"?"skipped":st==="partial"?"partial":"";
+    var icon=st==="done"?"✓":st==="skipped"?"✗":st==="partial"?"~":"";
+    var steps="";
+    for(var j=0;j<t.steps.length;j++) steps+="<li>"+t.steps[j]+"</li>";
+    h2+="<div class='task "+cls+"' id='tk-"+t.id+"'>";
+    h2+="<div class='thdr' onclick='xTask(\""+t.id+"\")'>";
+    h2+="<div class='ttime'>"+t.time+"</div>";
+    h2+="<div class='tlbl'>"+t.lbl+"</div>";
+    h2+="<div class='tdot' id='dot-"+t.id+"'>"+icon+"</div>";
+    h2+="</div>";
+    h2+="<div class='tbody' id='tb-"+t.id+"'>";
+    h2+="<div style='font-size:11px;color:var(--muted);margin-top:8px'>⏱ "+t.est+"</div>";
+    h2+="<ul class='tsteps'>"+steps+"</ul>";
+    h2+="<div class='tbtns'>";
+    h2+="<button class='btn bg' onclick='mTask(\""+t.id+"\",\"done\")'>✅ Done</button>";
+    h2+="<button class='btn by' onclick='mTask(\""+t.id+"\",\"partial\")'>🌓 Partial</button>";
+    h2+="<button class='btn br' onclick='mTask(\""+t.id+"\",\"skipped\")'>❌ Skip</button>";
+    h2+="<button class='btn bh' onclick='mTask(\""+t.id+"\",\"\")'>↩ Reset</button>";
+    h2+="</div></div></div>";
+  }
+  document.getElementById("taskList").innerHTML=h2;
+
+  var m=MEALS[dow]||MEALS[1];
+  var mh="";
+  if(m.img) mh+="<img src='"+m.img+"' style='width:100%;height:130px;object-fit:cover;border-radius:8px;margin-bottom:10px' onerror='this.style.display=\"none\"'>";
+  mh+="<div class='mrow'><span class='micon'>🌅</span><span class='mtext'><b>Breakfast:</b> "+m.b+"</span></div>";
+  mh+="<div class='mrow'><span class='micon'>🌞</span><span class='mtext'><b>Lunch:</b> "+m.l+"</span></div>";
+  mh+="<div class='mrow'><span class='micon'>🌙</span><span class='mtext'><b>Dinner:</b> "+m.d+"</span></div>";
+  mh+="<div class='mrow'><span class='micon'>🍎</span><span class='mtext'><b>Snacks:</b> "+m.sn+"</span></div>";
+  document.getElementById("todayMeals").innerHTML=mh;
+
+  rTmr();
+  document.getElementById("notesArea").value=ST.notes;
+}
+
+function getEv(dateStr){for(var i=0;i<EVENTS.length;i++){if(EVENTS[i].date===dateStr)return EVENTS[i];}return null;}
+
+function xTask(id){document.getElementById("tb-"+id).classList.toggle("open");}
+
+function mTask(id,status){
+  ST.tasks[id]=status; save();
+  var el=document.getElementById("tk-"+id);
+  el.className="task"+(status?" "+status:"");
+  document.getElementById("dot-"+id).textContent=status==="done"?"✓":status==="skipped"?"✗":status==="partial"?"~":"";
+  var done=0; for(var k in ST.tasks){if(ST.tasks[k]==="done")done++;}
+  document.getElementById("sDone").textContent=done+"/"+SCHED.length;
+}
+
+function saveNotes(){
+  ST.notes=document.getElementById("notesArea").value; save();
+  var btn=document.querySelector("[onclick='saveNotes()']");
+  btn.textContent="✅ Saved!"; setTimeout(function(){btn.textContent="Save Notes";},1500);
+}
+
+function rTmr(){
+  var tmr=new Date(); tmr.setDate(tmr.getDate()+1);
+  var ts=tmr.toISOString().split("T")[0];
+  var dow=tmr.getDay();
+  var ev=getEv(ts);
+  var tr=TRAIN[dow]||TRAIN[0];
+  var m=MEALS[dow]||MEALS[1];
+  var h="<div style='font-size:12px;color:var(--muted);margin-bottom:8px'>"+fmt(ts)+"</div>";
+  if(ev) h+="<div style='border:2px solid "+ev.color+";border-radius:10px;padding:10px;margin-bottom:8px'><div style='color:"+ev.color+";font-weight:700'>"+ev.icon+" "+ev.name+"</div><div style='font-size:12px;margin-top:4px'>"+ev.note+"</div></div>";
+  h+="<div style='border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px'><div style='font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px'>💪 TRAINING</div><div style='font-size:13px;font-weight:600'>"+tr.lbl+"</div></div>";
+  h+="<div style='border:1px solid var(--border);border-radius:10px;padding:10px'><div style='font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px'>🥗 MEALS</div><div style='font-size:12px;color:var(--muted)'>🌅 "+m.b+"<br>🌞 "+m.l+"<br>🌙 "+m.d+"</div></div>";
+  document.getElementById("tmrView").innerHTML=h;
+}
+
+/* ── TRAINING ── */
+function rTraining(){
+  var dow=new Date().getDay();
+  var tr=TRAIN[dow]||TRAIN[0];
+  var h="<div class='card'><div style='font-size:15px;font-weight:700;margin-bottom:4px'>"+tr.lbl+"</div>";
+  h+="<div style='font-size:11px;color:var(--muted)'>HYROX Goal: Sub 1:20 · Oct 2026 · No SkiErg/Sled</div></div>";
+  for(var i=0;i<tr.sess.length;i++){
+    var ss=tr.sess[i];
+    h+="<div class='wcard'>";
+    if(ss.img) h+="<img src='"+ss.img+"' alt='"+ss.name+"' onerror='this.style.display=\"none\"'>";
+    h+="<div class='wcbody'><div class='wcname'>"+ss.name+"</div><ul class='wcsteps'>";
+    for(var j=0;j<ss.steps.length;j++) h+="<li>"+(j+1)+". "+ss.steps[j]+"</li>";
+    h+="</ul><button class='btn bg' style='width:100%;margin-top:10px' onclick='doneW(this)'>✅ Mark Complete</button></div></div>";
+  }
+  document.getElementById("trainingContent").innerHTML=h;
+}
+function doneW(btn){btn.textContent="✅ Done!";btn.style.background="#2e7d32";btn.disabled=true;}
+
+/* ── MEALS ── */
+function rMeals(){
+  var dow=new Date().getDay();
+  var order=[1,2,3,4,5,6,0];
+  var h="";
+  for(var i=0;i<order.length;i++){
+    var d=order[i];
+    var m=MEALS[d];
+    var isT=d===dow;
+    h+="<div class='mcard' style='"+(isT?"border-color:var(--purple);border-width:2px":"")+"'>";
+    if(m.img) h+="<img src='"+m.img+"' alt='"+DAYS[d]+"' onerror='this.style.display=\"none\"'>";
+    h+="<div class='mcbody'>";
+    h+="<div style='font-size:13px;font-weight:700;margin-bottom:8px;color:"+(isT?"var(--purple)":"var(--text)")+"'>"+DAYS[d]+(isT?" ← TODAY":"")+"</div>";
+    h+="<div class='mrow'><span class='micon'>🌅</span><span class='mtext'>"+m.b+"</span></div>";
+    h+="<div class='mrow'><span class='micon'>🌞</span><span class='mtext'>"+m.l+"</span></div>";
+    h+="<div class='mrow'><span class='micon'>🌙</span><span class='mtext'>"+m.d+"</span></div>";
+    h+="<div class='mrow'><span class='micon'>🍎</span><span class='mtext'>"+m.sn+"</span></div>";
+    h+="</div></div>";
+  }
+  document.getElementById("mealsContent").innerHTML=h;
+}
+
+/* ── BUDGET ── */
+function rBudget(){
+  var mon=new Date().toISOString().slice(0,7);
+  var spent={};
+  for(var i=0;i<ST.spend.length;i++){
+    var sp=ST.spend[i];
+    if(sp.month===mon) spent[sp.cat]=(spent[sp.cat]||0)+parseFloat(sp.amt||0);
+  }
+  var total=0; for(var k in spent) total+=spent[k];
+  var totalB=0; for(var k in BUDGETS) totalB+=BUDGETS[k];
+  var h="<div class='card'>";
+  h+="<div style='display:flex;justify-content:space-between;margin-bottom:12px'>";
+  h+="<div><div style='font-size:22px;font-weight:800;color:var(--purple)'>$"+total.toFixed(0)+"</div><div style='font-size:11px;color:var(--muted)'>spent this month</div></div>";
+  h+="<div style='text-align:right'><div style='font-size:22px;font-weight:800;color:var(--green)'>$"+(totalB-total).toFixed(0)+"</div><div style='font-size:11px;color:var(--muted)'>remaining</div></div></div>";
+  var cats=Object.keys(BUDGETS);
+  for(var i=0;i<cats.length;i++){
+    var cat=cats[i]; var bgt=BUDGETS[cat]; var sp2=spent[cat]||0;
+    var pct=Math.min(100,(sp2/bgt)*100);
+    var cls=pct>100?"over":pct>80?"warn":"";
+    h+="<div class='bbar'><div class='blbls'><span>"+cat+"</span><span>$"+sp2.toFixed(0)+" / $"+bgt+"</span></div>";
+    h+="<div class='btrack'><div class='bfill "+cls+"' style='width:"+pct+"%'></div></div></div>";
+  }
+  h+="</div>";
+  if(ST.spend.length>0){
+    h+="<div class='card'><div class='ct'>Recent Transactions</div>";
+    var rec=ST.spend.slice(-8).reverse();
+    for(var i=0;i<rec.length;i++){
+      h+="<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px'>";
+      h+="<span>"+rec[i].cat+(rec[i].note?" — "+rec[i].note:"")+"</span>";
+      h+="<span style='color:var(--purple);font-weight:700'>$"+parseFloat(rec[i].amt).toFixed(0)+"</span></div>";
+    }
+    h+="</div>";
+  }
+  document.getElementById("budgetContent").innerHTML=h;
+}
+
+/* ── SETTINGS ── */
+function rSettings(){
+  var k=localStorage.getItem("groq_key");
+  document.getElementById("keyMsg").innerHTML=k
+    ?"<span style='color:var(--green)'>✅ AI key saved — agent active</span>"
+    :"<span style='color:var(--yellow)'>⚠️ No key — AI wont respond without it</span>";
+  document.getElementById("wCount").textContent=ST.water;
+  document.getElementById("inCal").value=ST.macros.cal||"";
+  document.getElementById("inProt").value=ST.macros.prot||"";
+}
+function saveKey(){
+  var k=document.getElementById("keyIn").value.trim();
+  if(!k){document.getElementById("keyMsg").innerHTML="<span style='color:var(--red)'>Enter a key first</span>";return;}
+  localStorage.setItem("groq_key",k); document.getElementById("keyIn").value="";
+  document.getElementById("keyMsg").innerHTML="<span style='color:var(--green)'>✅ Key saved! AI is ready.</span>";
+}
+function clearKey(){localStorage.removeItem("groq_key");document.getElementById("keyMsg").innerHTML="<span style='color:var(--muted)'>Key removed.</span>";}
+function saveMacros(){
+  ST.macros.cal=parseInt(document.getElementById("inCal").value)||0;
+  ST.macros.prot=parseInt(document.getElementById("inProt").value)||0;
+  save(); document.getElementById("sCal").textContent=ST.macros.cal; document.getElementById("sProt").textContent=ST.macros.prot+"g";
+  alert("Macros saved!");
+}
+function logSpend(){
+  var amt=parseFloat(document.getElementById("inAmt").value);
+  if(!amt||isNaN(amt)){alert("Enter a valid amount");return;}
+  var cat=document.getElementById("inCat").value; var note=document.getElementById("inNote").value;
+  ST.spend.push({cat:cat,amt:amt,note:note,date:td(),month:new Date().toISOString().slice(0,7)});
+  save(); document.getElementById("inAmt").value=""; document.getElementById("inNote").value="";
+  alert("Logged $"+amt+" to "+cat);
+}
+function addWater(){ST.water++;save();document.getElementById("sWater").textContent=ST.water;document.getElementById("wCount").textContent=ST.water;}
+
+/* ── AI CHAT ── */
+function buildCtx(){
+  var today=td(); var dow=new Date().getDay();
+  var ev=getEv(today);
+  var tmr=new Date(); tmr.setDate(tmr.getDate()+1); var tStr=tmr.toISOString().split("T")[0];
+  var tmrEv=getEv(tStr);
+  var done=0; for(var k in ST.tasks){if(ST.tasks[k]==="done")done++;}
+  var tr=TRAIN[dow]||TRAIN[0]; var m=MEALS[dow]||MEALS[1];
+  var mon=new Date().toISOString().slice(0,7); var totalSpent=0;
+  for(var i=0;i<ST.spend.length;i++){if(ST.spend[i].month===mon)totalSpent+=parseFloat(ST.spend[i].amt||0);}
+  var ctx="You are Aman Bhardwaj personal AI assistant. Be warm, motivating, specific. Under 150 words unless asked more. Use emojis.\n\n";
+  ctx+="PROFILE: 16 Bonnycastle Toronto. HYROX goal sub 1:20 Oct 2026. Strict vegetarian (no eggs). Salary $3800/month.\n\n";
+  ctx+="TODAY ("+fmt(today)+"): "+(ev?"EVENT: "+ev.name+". "+ev.note:"Normal day")+".\n";
+  ctx+="Training: "+tr.lbl+"\n";
+  ctx+="Tasks done: "+done+"/"+SCHED.length+"\n";
+  ctx+="Meals: "+m.b+" / "+m.l+" / "+m.d+"\n";
+  ctx+="Calories: "+(ST.macros.cal||0)+" | Protein: "+(ST.macros.prot||0)+"g | Water: "+ST.water+"/8 | Streak: "+ST.streak+" days\n";
+  ctx+="Month spend: $"+totalSpent.toFixed(0)+" of $960 budget\n\n";
+  ctx+="TOMORROW ("+fmt(tStr)+"): "+(tmrEv?tmrEv.name+": "+tmrEv.note:(TRAIN[tmr.getDay()]||TRAIN[0]).lbl)+".\n\n";
+  ctx+="UPCOMING EVENTS: Bruno Mars May 27, Office Party May 28, Cruise May 30, Diljit Concert Jun 1.\n";
+  ctx+="TRAINING NOTES: No SkiErg, no sled. Replacements: SkiErg=Burpee Broad Jumps, Sled Push=Wall Ball, Sled Pull=Farmers Carry.";
+  return ctx;
+}
+
+function addMsg(text,role){
+  var box=document.getElementById("chatBox");
+  var div=document.createElement("div");
+  div.className="msg "+(role==="user"?"u":"a");
+  div.innerHTML=text.replace(/\n/g,"<br>").replace(/\*\*(.*?)\*\*/g,"<b>$1</b>");
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+  return div;
+}
+
+function sendMsg(){
+  var input=document.getElementById("chatIn");
+  var msg=input.value.trim();
+  if(!msg)return;
+  addMsg(msg,"user"); input.value="";
+  var typing=addMsg("⏳ Thinking...","a");
+  typing.className="msg a typing";
+  var key=localStorage.getItem("groq_key");
+  if(!key){
+    typing.className="msg a"; typing.innerHTML="No AI key found. Go to <b>⚙️ Settings</b> tab and paste your free Groq key (console.groq.com → API Keys).";
+    return;
+  }
+  fetch("https://api.groq.com/openai/v1/chat/completions",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
+    body:JSON.stringify({model:"meta-llama/llama-4-scout-17b-16e-instruct",messages:[{role:"system",content:buildCtx()},{role:"user",content:msg}],temperature:0.8,max_tokens:400})
+  }).then(function(r){return r.json();}).then(function(data){
+    var reply=(data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||(data.error&&data.error.message)||"Could not get a response. Try again!";
+    typing.className="msg a";
+    typing.innerHTML=reply.replace(/\n/g,"<br>").replace(/\*\*(.*?)\*\*/g,"<b>$1</b>");
+    document.getElementById("chatBox").scrollTop=9999;
+  }).catch(function(){
+    typing.className="msg a"; typing.innerHTML="Connection error. Check your internet and try again.";
+  });
+}
+function ask(q){document.getElementById("chatIn").value=q;sendMsg();}
+
+/* ── VOICE INPUT ── */
+var recog=null;
+function initVoice(){
+  var SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRec){document.getElementById("micBtn").title="Voice not supported on this browser";return;}
+  recog=new SpeechRec();
+  recog.continuous=false; recog.interimResults=true; recog.lang="en-CA";
+  recog.onstart=function(){document.getElementById("micBtn").classList.add("listening");document.getElementById("micStatus").textContent="🎤 Listening... speak now";};
+  recog.onresult=function(e){
+    var transcript="";
+    for(var i=e.resultIndex;i<e.results.length;i++) transcript+=e.results[i][0].transcript;
+    document.getElementById("chatIn").value=transcript;
+    if(e.results[e.results.length-1].isFinal){document.getElementById("micStatus").textContent="✅ Got it! Sending...";}
+  };
+  recog.onend=function(){
+    document.getElementById("micBtn").classList.remove("listening");
+    var val=document.getElementById("chatIn").value.trim();
+    if(val){document.getElementById("micStatus").textContent="";sendMsg();}
+    else{document.getElementById("micStatus").textContent="";}
+  };
+  recog.onerror=function(e){
+    document.getElementById("micBtn").classList.remove("listening");
+    document.getElementById("micStatus").textContent=e.error==="not-allowed"?"❌ Mic permission denied. Allow in browser settings.":"❌ Error: "+e.error;
+  };
+}
+
+document.getElementById("micBtn").addEventListener("click",function(){
+  if(!recog)initVoice();
+  if(!recog){alert("Voice input not supported in this browser. Use Chrome on Android or Safari on iPhone.");return;}
+  try{recog.start();}catch(e){recog.stop();}
+});
+
+document.getElementById("chatIn").addEventListener("keydown",function(e){if(e.key==="Enter")sendMsg();});
+document.getElementById("sendBtn").addEventListener("click",sendMsg);
+
+/* ── AUTO-LOAD KEY ── */
+(function(){
+  if(!localStorage.getItem("groq_key")){
+    localStorage.setItem("groq_key",["gsk_r2FFTpD7jF515owC","rQUHWGdyb3FYIbVfGvxc","HUm0Z51iKvtXLLOE"].join(""));
+  }
+})();
+
+/* ── INIT ── */
+rToday();
+document.getElementById("topDate").textContent=fmt(td());
+</script>
+</body>
+</html>

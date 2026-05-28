@@ -36,7 +36,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .br{background:var(--red);color:#fff}
 .bh{background:var(--border);color:var(--text)}
 .bo{background:var(--orange);color:#fff}
-/* Chat */
 .chatbox{display:flex;flex-direction:column;gap:10px;min-height:180px;max-height:48vh;overflow-y:auto;padding:4px 0}
 .msg{padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6;max-width:93%;word-break:break-word}
 .msg.u{background:var(--purple);color:#fff;align-self:flex-end;border-radius:14px 14px 3px 14px}
@@ -48,15 +47,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .micbtn.on{background:var(--red);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-/* Hero */
-.hero{border-radius:12px;padding:16px;margin-bottom:10px;background:linear-gradient(135deg,rgba(108,99,255,.2),rgba(66,165,.1));border:1px solid rgba(108,99,255,.3)}
+.hero{border-radius:12px;padding:16px;margin-bottom:10px;background:linear-gradient(135deg,rgba(108,99,255,.2),rgba(66,165,245,.1));border:1px solid rgba(108,99,255,.3)}
 .evbanner{border-radius:12px;padding:12px;margin-bottom:10px;border:2px solid var(--yellow);background:rgba(255,211,42,.07)}
-/* Stats */
 .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center}
 .sv{font-size:17px;font-weight:800;color:var(--purple)}
 .sl{font-size:10px;color:var(--muted);margin-top:2px}
-/* Tasks */
 .task{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
 .thdr{display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .ttime{font-size:11px;color:var(--muted);width:36px;flex-shrink:0}
@@ -71,21 +67,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .tsteps{list-style:none;margin:8px 0}
 .tsteps li{font-size:12px;color:var(--muted);padding:3px 0 3px 10px;border-left:2px solid var(--purple);margin-bottom:3px}
 .tbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-/* Workout cards */
 .wcard{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
 .wcard img{width:100%;height:150px;object-fit:cover;display:block;background:var(--border)}
 .wcbody{padding:12px}
 .wcname{font-size:14px;font-weight:700;margin-bottom:8px}
 .wcsteps{list-style:none}
 .wcsteps li{font-size:12px;color:var(--muted);padding:3px 0 3px 10px;border-left:2px solid var(--purple);margin-bottom:3px}
-/* Meal cards */
 .mcard{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
-.mcard img{width:100%;height:130px;object-fit:cover;display:block;background:var(--border)}
 .mcbody{padding:12px}
 .mrow{display:flex;gap:6px;margin-bottom:5px}
 .micon{font-size:13px;flex-shrink:0}
 .mtext{font-size:12px;color:var(--muted);flex:1}
-/* Budget */
 .bsec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .brow{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)}
 .brow:last-child{border-bottom:none}
@@ -94,11 +86,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .brow-spent{font-size:11px;color:var(--muted);margin-top:2px}
 .btrack{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px;width:120px}
 .bfill{height:100%;border-radius:3px;background:var(--green)}.bfill.warn{background:var(--yellow)}.bfill.over{background:var(--red)}
-/* Inputs */
 .sinput{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;margin-bottom:8px}
 .sinput:focus{outline:none;border-color:var(--purple)}
 select.sinput{-webkit-appearance:none}
-/* Action log */
 .action-log{max-height:220px;overflow-y:auto}
 .alog-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
 .alog-icon{font-size:16px;flex-shrink:0}
@@ -107,17 +97,14 @@ select.sinput{-webkit-appearance:none}
 .s-done{background:rgba(76,175,80,.2);color:var(--green)}
 .s-skip{background:rgba(244,67,54,.2);color:var(--red)}
 .s-part{background:rgba(255,211,42,.2);color:var(--yellow)}
-/* Section pills inside Track */
 .sec-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
 .sec-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;flex-shrink:0}
 .sec-tab.on{background:var(--purple);color:#fff;border-color:var(--purple)}
 .sec-panel{display:none}.sec-panel.active{display:block}
-/* Progress bar */
 .pbar{height:10px;background:var(--border);border-radius:6px;overflow:hidden;margin:6px 0}
 .pfill{height:100%;border-radius:6px;background:var(--green);transition:width .3s}
-/* Water bubbles */
 .water-grid{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-.wbub{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.wbub{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s}
 .wbub.filled{background:var(--blue);border-color:var(--blue)}
 </style>
 </head>
@@ -130,17 +117,16 @@ select.sinput{-webkit-appearance:none}
       <div style="font-size:11px;color:var(--muted)" id="topDate"></div>
     </div>
   </div>
-
   <div class="content">
 
-    <!-- ══════════════ AI TAB ══════════════ -->
+    <!-- AI TAB -->
     <div id="tab-ai" class="tab active">
       <div class="card">
         <div class="ct">🤖 AI Assistant · Llama 4</div>
         <div class="chatbox" id="chatBox"></div>
         <div class="chin">
-          <input class="cinput" id="chatIn" placeholder="Ask or command anything..." />
-          <button class="micbtn" id="micBtn" title="Voice input">🎤</button>
+          <input class="cinput" id="chatIn" placeholder="e.g. I ate falafel from Sultan for $16.77" />
+          <button class="micbtn" id="micBtn">🎤</button>
           <button class="btn bp" id="sendBtn">Send</button>
         </div>
         <div id="micStatus" style="font-size:11px;color:var(--muted);margin-top:6px;min-height:16px"></div>
@@ -163,14 +149,14 @@ select.sinput{-webkit-appearance:none}
         <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Free at console.groq.com → API Keys</div>
         <input type="password" class="sinput" id="keyIn" placeholder="gsk_...">
         <div style="display:flex;gap:8px">
-          <button class="btn bp" style="flex:1" onclick="saveKey()">💾 Save Key</button>
-          <button class="btn bh" onclick="clearKey()">🗑 Clear</button>
+          <button class="btn bp" style="flex:1" id="saveKeyBtn">💾 Save Key</button>
+          <button class="btn bh" id="clearKeyBtn">🗑 Clear</button>
         </div>
         <div id="keyMsg" style="font-size:12px;margin-top:8px"></div>
       </div>
     </div>
 
-    <!-- ══════════════ TODAY TAB ══════════════ -->
+    <!-- TODAY TAB -->
     <div id="tab-today" class="tab">
       <div id="evBanner"></div>
       <div class="hero">
@@ -198,14 +184,12 @@ select.sinput{-webkit-appearance:none}
       <div class="card">
         <div class="ct">📝 Notes</div>
         <textarea id="notesArea" class="sinput" style="min-height:80px;resize:none;margin-bottom:8px" placeholder="Add notes for today..."></textarea>
-        <button class="btn bp" style="width:100%" onclick="saveNotes()">Save Notes</button>
+        <button class="btn bp" style="width:100%" id="saveNotesBtn">Save Notes</button>
       </div>
     </div>
 
-    <!-- ══════════════ TRACK TAB ══════════════ -->
+    <!-- TRACK TAB -->
     <div id="tab-track" class="tab">
-
-      <!-- Sub-section pill tabs -->
       <div class="sec-tabs">
         <button class="sec-tab on" id="st-dash" onclick="showSec('dash')">📊 Dashboard</button>
         <button class="sec-tab" id="st-workout" onclick="showSec('workout')">💪 Workout</button>
@@ -214,24 +198,14 @@ select.sinput{-webkit-appearance:none}
         <button class="sec-tab" id="st-meals" onclick="showSec('meals')">🥗 Meals</button>
         <button class="sec-tab" id="st-log" onclick="showSec('log')">📋 Log</button>
       </div>
-
-      <!-- DASHBOARD -->
-      <div class="sec-panel active" id="sp-dash">
-        <div id="dashContent"></div>
-      </div>
-
-      <!-- WORKOUT -->
-      <div class="sec-panel" id="sp-workout">
-        <div id="workoutContent"></div>
-      </div>
-
-      <!-- WATER -->
+      <div class="sec-panel active" id="sp-dash"><div id="dashContent"></div></div>
+      <div class="sec-panel" id="sp-workout"><div id="workoutContent"></div></div>
       <div class="sec-panel" id="sp-water">
         <div class="card">
           <div class="ct">💧 Water Tracker</div>
           <div class="water-grid" id="waterGrid"></div>
           <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
-            <button class="btn bp" onclick="addWater()">+ Add Glass</button>
+            <button class="btn bp" id="addWaterBtn">+ Add Glass</button>
             <span id="wCount2" style="font-size:26px;font-weight:800;color:var(--blue)">0</span>
             <span style="font-size:12px;color:var(--muted)">/ 8 glasses</span>
           </div>
@@ -239,8 +213,6 @@ select.sinput{-webkit-appearance:none}
           <div style="font-size:11px;color:var(--muted);margin-top:4px" id="waterTip">Keep going! Hydration = performance 💪</div>
         </div>
       </div>
-
-      <!-- BUDGET -->
       <div class="sec-panel" id="sp-budget">
         <div class="card">
           <div class="ct">💰 Log Spend</div>
@@ -250,18 +222,12 @@ select.sinput{-webkit-appearance:none}
               <select class="sinput" id="inCat" style="margin:0"><option>Groceries</option><option>Eating Out</option><option>Transit</option><option>Supplements</option><option>Events</option><option>Shared</option><option>Other</option></select>
             </div>
           </div>
-          <input type="text" class="sinput" id="inNote" placeholder="Note (optional)">
-          <button class="btn bp" style="width:100%" onclick="logSpend()">💾 Log Spend</button>
+          <input type="text" class="sinput" id="inNote" placeholder="Note e.g. Sultan falafel">
+          <button class="btn bp" style="width:100%" id="logSpendBtn">💾 Log Spend</button>
         </div>
         <div id="budgetContent"></div>
       </div>
-
-      <!-- MEALS WEEKLY -->
-      <div class="sec-panel" id="sp-meals">
-        <div id="mealsContent"></div>
-      </div>
-
-      <!-- LOG -->
+      <div class="sec-panel" id="sp-meals"><div id="mealsContent"></div></div>
       <div class="sec-panel" id="sp-log">
         <div class="card">
           <div class="ct">📊 Log Macros</div>
@@ -269,7 +235,7 @@ select.sinput{-webkit-appearance:none}
             <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Calories</div><input type="number" class="sinput" id="inCal" placeholder="1800" style="margin:0"></div>
             <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Protein (g)</div><input type="number" class="sinput" id="inProt" placeholder="140" style="margin:0"></div>
           </div>
-          <button class="btn bp" style="width:100%" onclick="saveMacros()">💾 Save Macros</button>
+          <button class="btn bp" style="width:100%" id="saveMacrosBtn">💾 Save Macros</button>
         </div>
         <div class="card">
           <div class="ct">📋 Action Log — Today</div>
@@ -282,550 +248,4 @@ select.sinput{-webkit-appearance:none}
             <span style="font-weight:800;color:var(--yellow)" id="streakVal">0 days 🔥</span>
           </div>
           <div style="display:flex;gap:8px">
-            <button class="btn bg" style="flex:1" onclick="ST.streak++;save();refreshLog()">+1 Day 🔥</button>
-            <button class="btn bh" style="flex:1" onclick="ST.streak=0;save();refreshLog()">Reset</button>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- end track tab -->
-
-  </div><!-- end content -->
-
-  <nav class="nav">
-    <button class="nb on" id="nav-ai" onclick="showTab('ai')"><span class="ni">🤖</span>AI</button>
-    <button class="nb" id="nav-today" onclick="showTab('today')"><span class="ni">📅</span>Today</button>
-    <button class="nb" id="nav-track" onclick="showTab('track')"><span class="ni">✅</span>Track</button>
-  </nav>
-</div>
-
-<script>
-var DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-function td(){return new Date().toISOString().split("T")[0];}
-function fmt(d){var x=new Date(d+"T12:00:00");return DAYS[x.getDay()]+", "+MON[x.getMonth()]+" "+x.getDate();}
-function gl(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
-function sl(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-
-/* ─── EVENTS ─── */
-var EVENTS=[
-  {date:"2026-05-27",name:"Bruno Mars Concert",icon:"🎵",color:"#ffd32a",note:"Evening show. 20min upper body ONLY — NO legs. Eat FULL dinner BEFORE venue."},
-  {date:"2026-05-28",name:"Office Party",icon:"🎊",color:"#ff7043",note:"After work. Easy 30min jog only. Light dinner at party."},
-  {date:"2026-05-30",name:"Cruise Day",icon:"🚢",color:"#42a5f5",note:"All day. Walking counts as training. No strict macros — enjoy!"},
-  {date:"2026-06-01",name:"Diljit Concert",icon:"🎶",color:"#4caf50",note:"Evening. Do HYROX simulation EARLY before 10am. Eat dinner before show."}
-];
-function getEv(ds){for(var i=0;i<EVENTS.length;i++){if(EVENTS[i].date===ds)return EVENTS[i];}return null;}
-
-/* ─── SCHEDULE ─── */
-var SCHED=[
-  {id:"t1",time:"6:00",lbl:"Wake Up + Supplements",est:"15 min",steps:["Drink 500ml water immediately","Creatine 5g + Vitamin D3 + Omega-3 + Iron","Brush teeth and freshen up","Open app and check today plan"]},
-  {id:"t2",time:"6:15",lbl:"Morning Workout",est:"20-45 min",steps:["See Track → Workout for full session","Bruno Mars day: 20min upper body ONLY — no legs","Done by 7am, shower quickly"]},
-  {id:"t3",time:"7:00",lbl:"Breakfast + Protein Shake",est:"20 min",steps:["High protein vegetarian breakfast","Whey protein shake post-workout","Pack lunch for office","Log calories in Track → Log"]},
-  {id:"t4",time:"9:00",lbl:"Work",est:"8 hrs",steps:["Commute TTC or walk Lakeshore","Keep water bottle at desk","Lunch break: walk outside 10min","Stretch 5min every 2 hours"]},
-  {id:"t5",time:"13:00",lbl:"Lunch",est:"30 min",steps:["Packed: dal + roti OR paneer wrap","Avoid heavy carbs — concert tonight","Log macros after eating","Short walk after lunch"]},
-  {id:"t6",time:"17:00",lbl:"Post-Work + Calls",est:"30 min",steps:["Evening walk along Lakeshore","📞 Call Mom 10min","📞 Call Dad 10min","Check tomorrow plan"]},
-  {id:"t7",time:"18:30",lbl:"Dinner — EAT BEFORE CONCERT",est:"45 min",steps:["IMPORTANT: eat FULL dinner before leaving","Paneer, dal, rajma, or tofu","Magnesium 400mg with dinner","Leave for venue after dinner"]},
-  {id:"t8",time:"21:00",lbl:"Bruno Mars Concert 🎵",est:"3+ hrs",steps:["Enjoy every moment!","Stay hydrated — buy water inside","Dance, sing, have the best night!","Safe travel home"]},
-  {id:"t9",time:"23:30",lbl:"Wind Down + Sleep",est:"30 min",steps:["Drink water before bed","Quick journal: best moment tonight","Set alarm for tomorrow","Lights out — recover well"]}
-];
-
-/* ─── TRAINING ─── */
-var TRAIN={
-  0:{lbl:"Rest + Recovery",sess:[{name:"Active Recovery Walk",img:"",steps:["20-30min easy walk around Bonnycastle","No structured training today","Light stretching if desired","Focus on sleep and nutrition"]}]},
-  1:{lbl:"Zone 2 Run + Legs",sess:[
-    {name:"Zone 2 Run 45min",img:"https://upload.wikimedia.org/wikipedia/commons/6/6c/CN_Tower_from_Centre_Island.JPG",steps:["Warm up 5min walk from Bonnycastle","Run Lakeshore trail, HR 135-145 bpm","45min easy conversational pace","Cool down walk 5min","Stretch calves, quads, hamstrings"]},
-    {name:"Leg Gym Block",img:"",steps:["Goblet squat 4x12","Romanian deadlift 4x10","Walking lunges 3x12 each leg","Step-ups 3x10 each leg","Calf raises 3x20"]}
-  ]},
-  2:{lbl:"Upper Body + Burpees",sess:[
-    {name:"Burpee Broad Jumps",img:"",steps:["10 sets x 10 burpee broad jumps","Rest 45s between sets","Full body extension at top","Chest to floor on way down"]},
-    {name:"Upper Body Push/Pull",img:"",steps:["Bench press 4x8","Dumbbell rows 4x10 each","Shoulder press 4x10","Pull-ups 3x max","Tricep dips 3x12","Bicep curls 3x12"]}
-  ]},
-  3:{lbl:"Bruno Mars Day — Short Only!",sess:[
-    {name:"Quick Upper Body 20min MAX",img:"",steps:["Push-ups 4x10","Dumbbell rows 4x10 each","Shoulder press 3x10","STOP — no legs, standing all night!","Done by 6:35am — enjoy tonight 🎵"]}
-  ]},
-  4:{lbl:"HYROX Intervals + Farmers Carry",sess:[
-    {name:"8x400m Intervals",img:"",steps:["Warm up easy jog 10min","8 x 400m at 85-90% effort","Rest exactly 90s between each","Target: sub 2:00 per 400m"]},
-    {name:"Farmers Carry + Wall Ball",img:"",steps:["Farmers carry: 32kg KB x 4 x 40m","Rest 90s between sets","Wall ball: 3x20 (9kg to 10ft)","Replaces SkiErg + Sled"]}
-  ]},
-  5:{lbl:"Long Run + Optional Tennis",sess:[
-    {name:"Long Run 60-75min",img:"",steps:["Bonnycastle to Lakeshore East","Run to Cherry Beach and back ~10km","Easy conversational pace","Post-run: banana + protein shake"]}
-  ]},
-  6:{lbl:"HYROX Full Simulation",sess:[
-    {name:"Full HYROX Sim",img:"",steps:["1km + Burpee Broad Jumps 80m (replaces SkiErg)","1km + Wall Ball 100 reps (replaces Sled Push)","1km + Farmers Carry 200m (replaces Sled Pull)","1km + Rowing 1000m","1km + Sandbag Lunges 100m","Target: sub 1:20"]}
-  ]}
-};
-
-/* ─── MEALS ─── */
-var MEALS={
-  0:{img:"",b:"Avocado toast + chai + fruit",l:"Palak paneer + roti",d:"Eat BEFORE Diljit: dal + rice + sabzi",sn:"Dates + mixed nuts"},
-  1:{img:"",b:"Paneer bhurji + 2 roti + chai",l:"Dal makhani + rice + salad",d:"Tofu stir-fry + quinoa",sn:"Banana + whey shake + almonds"},
-  2:{img:"",b:"Oats + peanut butter + banana",l:"Chana masala + rice + raita",d:"Paneer tikka masala + roti",sn:"Greek yogurt + berries"},
-  3:{img:"",b:"Big breakfast: whey shake + fruit",l:"Packed: dal + roti + veggies",d:"BEFORE Bruno Mars: rajma chawal",sn:"Protein bar + nuts"},
-  4:{img:"",b:"Lentil soup + whole wheat toast",l:"Tofu + brown rice + stir-fry",d:"Light at office party",sn:"Apple + almond butter"},
-  5:{img:"",b:"Smoothie: banana + spinach + whey",l:"Paneer wrap + side salad",d:"Dal tadka + jeera rice",sn:"Protein bar post-run"},
-  6:{img:"",b:"Aloo paratha + curd + chai",l:"Cruise — vegetarian options",d:"Cruise dinner — savour it",sn:"Fresh fruit"}
-};
-
-/* ─── BUDGET ─── */
-var BUDGET_PLAN={
-  "Income":{type:"income",items:{"Salary":3800}},
-  "Fixed Costs":{type:"fixed",items:{"Rent (shared)":1100,"Phone":50,"Transit Pass":156,"Internet (shared)":30}},
-  "Food":{type:"variable",items:{"Groceries":200,"Eating Out":100}},
-  "Shared Expenses":{type:"shared",items:{"Utilities (split)":60,"Cleaning/shared":30}},
-  "Health":{type:"variable",items:{"Supplements":60,"Medical/Dental":30}},
-  "Events & Fun":{type:"variable",items:{"Events/Entertainment":120,"Subscriptions":20}},
-  "Goals":{type:"savings",items:{"Savings":500,"Emergency Fund":100}},
-  "Buffer":{type:"variable",items:{"Misc/Buffer":150}}
-};
-function getBudgetOv(){return gl("budget_ov")||{};}
-function setBudgetItem(cat,item,amt){var ov=getBudgetOv();if(!ov[cat])ov[cat]={};ov[cat][item]=Math.max(0,amt);sl("budget_ov",ov);}
-function getEff(cat,item){var ov=getBudgetOv();if(ov[cat]&&ov[cat][item]!==undefined)return ov[cat][item];return BUDGET_PLAN[cat].items[item];}
-
-/* ─── STATE ─── */
-var ST={
-  tasks:gl("tasks_"+td())||{},
-  macros:gl("macros_"+td())||{cal:0,prot:0},
-  water:gl("water_"+td())||0,
-  spend:gl("spend")||[],
-  notes:gl("notes_"+td())||"",
-  streak:gl("streak")||0,
-  alog:gl("alog_"+td())||[]
-};
-function save(){
-  sl("tasks_"+td(),ST.tasks);sl("macros_"+td(),ST.macros);sl("water_"+td(),ST.water);
-  sl("spend",ST.spend);sl("notes_"+td(),ST.notes);sl("streak",ST.streak);sl("alog_"+td(),ST.alog);
-}
-
-/* ─── NAV ─── */
-function showTab(id){
-  document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});
-  document.querySelectorAll(".nb").forEach(function(b){b.classList.remove("on");});
-  document.getElementById("tab-"+id).classList.add("active");
-  document.getElementById("nav-"+id).classList.add("on");
-  if(id==="today")rToday();
-  else if(id==="track"){showSec("dash");}
-}
-
-/* ─── SECTION TABS (Track) ─── */
-var _curSec="dash";
-function showSec(id){
-  document.querySelectorAll(".sec-panel").forEach(function(p){p.classList.remove("active");});
-  document.querySelectorAll(".sec-tab").forEach(function(t){t.classList.remove("on");});
-  document.getElementById("sp-"+id).classList.add("active");
-  document.getElementById("st-"+id).classList.add("on");
-  _curSec=id;
-  if(id==="dash")refreshDash();
-  else if(id==="workout")rWorkout();
-  else if(id==="budget")rBudget();
-  else if(id==="meals")rMeals();
-  else if(id==="water")rWater();
-  else if(id==="log")refreshLog();
-}
-
-/* ─── TODAY ─── */
-function rToday(){
-  var now=new Date(),dow=now.getDay(),h=now.getHours(),today=td();
-  var emj={0:"😴",1:"💪",2:"🔥",3:"🎵",4:"⚡",5:"🏃",6:"🏋️"};
-  document.getElementById("heroName").textContent=(h<12?"Good morning":h<17?"Good afternoon":"Good evening")+", Aman "+(emj[dow]||"👋");
-  document.getElementById("topDate").textContent=fmt(today);
-  document.getElementById("streakBadge").textContent=ST.streak>0?"🔥 "+ST.streak+"d":"";
-  var ev=getEv(today),banner=document.getElementById("evBanner");
-  if(ev){
-    banner.innerHTML="<div class='evbanner'><div style='font-size:15px;font-weight:800;color:var(--yellow)'>"+ev.icon+" "+ev.name+" — TODAY!</div><div style='font-size:12px;margin-top:4px;line-height:1.5'>"+ev.note+"</div></div>";
-    document.getElementById("heroSub").textContent="16 Bonnycastle · "+ev.icon+" "+ev.name+" TODAY!";
-  } else {
-    var tmrD=new Date();tmrD.setDate(tmrD.getDate()+1);
-    var tev=getEv(tmrD.toISOString().split("T")[0]);
-    banner.innerHTML=tev?"<div class='evbanner' style='border-color:"+tev.color+"'><div style='font-size:15px;font-weight:800;color:"+tev.color+"'>"+tev.icon+" "+tev.name+" TOMORROW!</div><div style='font-size:12px;margin-top:4px'>"+tev.note+"</div></div>":"";
-    document.getElementById("heroSub").textContent=tev?"16 Bonnycastle · "+tev.icon+" "+tev.name+" tomorrow!":"16 Bonnycastle · Toronto · HYROX Oct 2026";
-  }
-  var done=0;for(var k in ST.tasks){if(ST.tasks[k]==="done")done++;}
-  document.getElementById("sDone").textContent=done+"/"+SCHED.length;
-  document.getElementById("sCal").textContent=ST.macros.cal||0;
-  document.getElementById("sProt").textContent=(ST.macros.prot||0)+"g";
-  document.getElementById("sWater").textContent=ST.water||0;
-  var h2="";
-  for(var i=0;i<SCHED.length;i++){
-    var t=SCHED[i],st=ST.tasks[t.id]||"";
-    var cls=st==="done"?"done":st==="skipped"?"skipped":st==="partial"?"partial":"";
-    var icon=st==="done"?"✓":st==="skipped"?"✗":st==="partial"?"~":"";
-    var steps="";for(var j=0;j<t.steps.length;j++)steps+="<li>"+t.steps[j]+"</li>";
-    h2+="<div class='task "+cls+"' id='tk-"+t.id+"'>";
-    h2+="<div class='thdr' onclick='xTask(\""+t.id+"\")'><div class='ttime'>"+t.time+"</div><div class='tlbl'>"+t.lbl+"</div><div class='tdot' id='dot-"+t.id+"'>"+icon+"</div></div>";
-    h2+="<div class='tbody' id='tb-"+t.id+"'><div style='font-size:11px;color:var(--muted);margin-top:8px'>⏱ "+t.est+"</div><ul class='tsteps'>"+steps+"</ul>";
-    h2+="<div class='tbtns'><button class='btn bg' onclick='mTask(\""+t.id+"\",\"done\")'>✅ Done</button><button class='btn by' onclick='mTask(\""+t.id+"\",\"partial\")'>🌓 Partial</button><button class='btn br' onclick='mTask(\""+t.id+"\",\"skipped\")'>❌ Skip</button><button class='btn bh' onclick='mTask(\""+t.id+"\",\"\")'>↩ Reset</button></div></div></div>";
-  }
-  document.getElementById("taskList").innerHTML=h2;
-  var m=MEALS[dow]||MEALS[1],mh="";
-  mh+="<div class='mrow'><span class='micon'>🌅</span><span class='mtext'><b>Breakfast:</b> "+m.b+"</span></div>";
-  mh+="<div class='mrow'><span class='micon'>🌞</span><span class='mtext'><b>Lunch:</b> "+m.l+"</span></div>";
-  mh+="<div class='mrow'><span class='micon'>🌙</span><span class='mtext'><b>Dinner:</b> "+m.d+"</span></div>";
-  mh+="<div class='mrow'><span class='micon'>🍎</span><span class='mtext'><b>Snacks:</b> "+m.sn+"</span></div>";
-  document.getElementById("todayMeals").innerHTML=mh;
-  rTmr();
-  document.getElementById("notesArea").value=ST.notes;
-}
-function xTask(id){document.getElementById("tb-"+id).classList.toggle("open");}
-function mTask(id,status){
-  var prev=ST.tasks[id]||"";ST.tasks[id]=status;
-  var t=SCHED.find(function(x){return x.id===id;})||{lbl:id};
-  if(status&&status!==prev){ST.alog.push({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),lbl:t.lbl,status:status,type:"task"});}
-  save();
-  var el=document.getElementById("tk-"+id);
-  if(el)el.className="task"+(status?" "+status:"");
-  var dot=document.getElementById("dot-"+id);
-  if(dot)dot.textContent=status==="done"?"✓":status==="skipped"?"✗":status==="partial"?"~":"";
-  var done=0;for(var k in ST.tasks){if(ST.tasks[k]==="done")done++;}
-  document.getElementById("sDone").textContent=done+"/"+SCHED.length;
-}
-function saveNotes(){ST.notes=document.getElementById("notesArea").value;save();var btn=event.target;btn.textContent="✅ Saved!";setTimeout(function(){btn.textContent="Save Notes";},1500);}
-function rTmr(){
-  var tmr=new Date();tmr.setDate(tmr.getDate()+1);
-  var ts=tmr.toISOString().split("T")[0],dow=tmr.getDay(),ev=getEv(ts),tr=TRAIN[dow]||TRAIN[0],m=MEALS[dow]||MEALS[1];
-  var h="<div style='font-size:12px;color:var(--muted);margin-bottom:8px'>"+fmt(ts)+"</div>";
-  if(ev)h+="<div style='border:2px solid "+ev.color+";border-radius:10px;padding:10px;margin-bottom:8px'><div style='color:"+ev.color+";font-weight:700'>"+ev.icon+" "+ev.name+"</div><div style='font-size:12px;margin-top:4px'>"+ev.note+"</div></div>";
-  h+="<div style='border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px'><div style='font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px'>💪 TRAINING</div><div style='font-size:13px;font-weight:600'>"+tr.lbl+"</div></div>";
-  h+="<div style='border:1px solid var(--border);border-radius:10px;padding:10px'><div style='font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px'>🥗 MEALS</div><div style='font-size:12px;color:var(--muted)'>🌅 "+m.b+"<br>🌞 "+m.l+"<br>🌙 "+m.d+"</div></div>";
-  document.getElementById("tmrView").innerHTML=h;
-}
-
-/* ─── WORKOUT ─── */
-function rWorkout(){
-  var dow=new Date().getDay(),tr=TRAIN[dow]||TRAIN[0];
-  var h="<div class='card'><div style='font-size:15px;font-weight:700;margin-bottom:4px'>"+tr.lbl+"</div><div style='font-size:11px;color:var(--muted)'>HYROX Goal: Sub 1:20 · Oct 2026 · No SkiErg/Sled</div></div>";
-  for(var i=0;i<tr.sess.length;i++){
-    var ss=tr.sess[i];
-    h+="<div class='wcard'>";
-    if(ss.img)h+="<img src='"+ss.img+"' alt='"+ss.name+"' onerror='this.style.display=\"none\"'>";
-    h+="<div class='wcbody'><div class='wcname'>"+ss.name+"</div><ul class='wcsteps'>";
-    for(var j=0;j<ss.steps.length;j++)h+="<li>"+(j+1)+". "+ss.steps[j]+"</li>";
-    h+="</ul><button class='btn bg' style='width:100%;margin-top:10px' onclick='doneWO(this)'>✅ Mark Complete</button></div></div>";
-  }
-  document.getElementById("workoutContent").innerHTML=h;
-}
-function doneWO(btn){
-  btn.textContent="✅ Done!";btn.style.background="#2e7d32";btn.disabled=true;
-  ST.alog.push({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),lbl:"Workout completed",status:"done",type:"task"});
-  save();
-}
-
-/* ─── WATER ─── */
-function rWater(){
-  document.getElementById("wCount2").textContent=ST.water;
-  var pct=Math.min(100,(ST.water/8)*100);
-  document.getElementById("waterBar").style.width=pct+"%";
-  var g="";
-  for(var i=0;i<8;i++){
-    g+="<div class='wbub"+(i<ST.water?" filled":"")+"' onclick='tapBub("+i+")'>💧</div>";
-  }
-  document.getElementById("waterGrid").innerHTML=g;
-  var tips=["Keep going! Hydration = performance 💪","Great start! Keep sipping 💧","Halfway there! 🌊","Almost there, stay hydrated! 💦","Nearly full! One more 🥤","Excellent! One more to go ⭐","So close! Almost 8 glasses 🔥","🏆 Goal achieved! 8/8 glasses!"];
-  document.getElementById("waterTip").textContent=tips[Math.min(ST.water,7)];
-}
-function tapBub(idx){if(idx>=ST.water){addWater();}else{ST.water=idx;save();rWater();document.getElementById("sWater").textContent=ST.water;}}
-function addWater(){
-  ST.water++;
-  ST.alog.push({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),lbl:"Glass of water ("+ST.water+"/8)",status:"done",type:"water"});
-  save();
-  document.getElementById("sWater").textContent=ST.water;
-  if(document.getElementById("sp-water").classList.contains("active"))rWater();
-}
-
-/* ─── BUDGET ─── */
-function rBudget(){
-  var mon=new Date().toISOString().slice(0,7),spent={};
-  for(var i=0;i<ST.spend.length;i++){var sp=ST.spend[i];if(sp.month===mon)spent[sp.cat]=(spent[sp.cat]||0)+parseFloat(sp.amt||0);}
-  var salary=getEff("Income","Salary");
-  var totalExp=0,cats=Object.keys(BUDGET_PLAN);
-  for(var i=0;i<cats.length;i++){if(BUDGET_PLAN[cats[i]].type==="income")continue;var items=Object.keys(BUDGET_PLAN[cats[i]].items);for(var j=0;j<items.length;j++)totalExp+=getEff(cats[i],items[j]);}
-  var net=salary-totalExp;
-  var totalSpent=0;for(var cat in spent)totalSpent+=spent[cat];
-  var h="<div class='card'>";
-  h+="<div style='display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px'>";
-  h+="<div style='text-align:center'><div style='font-size:10px;color:var(--muted)'>Salary</div><div style='font-size:16px;font-weight:800;color:var(--green)'>$"+salary+"</div></div>";
-  h+="<div style='text-align:center'><div style='font-size:10px;color:var(--muted)'>Spent</div><div style='font-size:16px;font-weight:800;color:var(--orange)'>$"+totalSpent.toFixed(0)+"</div></div>";
-  h+="<div style='text-align:center'><div style='font-size:10px;color:var(--muted)'>Net Left</div><div style='font-size:16px;font-weight:800;color:"+(net>=0?"var(--purple)":"var(--red)")+"'>$"+net.toFixed(0)+"</div></div></div>";
-  var expPct=totalExp>0?Math.min(100,(totalSpent/totalExp)*100):0;
-  h+="<div class='pbar'><div class='pfill"+(expPct>90?" over":expPct>70?" warn":"")+"' style='width:"+expPct+"%'></div></div>";
-  h+="<div style='font-size:11px;color:var(--muted);margin-top:4px'>$"+totalSpent.toFixed(0)+" of $"+totalExp.toFixed(0)+" budgeted ("+Math.round(expPct)+"%)</div></div>";
-  var typeColors={fixed:"var(--red)",variable:"var(--purple)",shared:"var(--orange)",savings:"var(--blue)"};
-  for(var i=0;i<cats.length;i++){
-    var cat=cats[i];if(BUDGET_PLAN[cat].type==="income")continue;
-    var tc=typeColors[BUDGET_PLAN[cat].type]||"var(--muted)";
-    h+="<div class='card'><div class='bsec-title' style='color:"+tc+"'>"+cat+"</div>";
-    var items=Object.keys(BUDGET_PLAN[cat].items);
-    for(var j=0;j<items.length;j++){
-      var item=items[j],budget=getEff(cat,item),spentAmt=spent[item]||0;
-      var pct=budget>0?Math.min(100,(spentAmt/budget)*100):0;
-      var fillCls=pct>100?"over":pct>80?"warn":"";
-      h+="<div class='brow'><div style='flex:1'><div class='brow-name'>"+item+"</div>";
-      if(spentAmt>0){h+="<div class='btrack'><div class='bfill "+fillCls+"' style='width:"+pct+"%'></div></div><div class='brow-spent'>Spent $"+spentAmt.toFixed(0)+"</div>";}
-      h+="</div><div class='brow-amt'>$"+budget.toFixed(0)+"</div></div>";
-    }
-    h+="</div>";
-  }
-  if(ST.spend.length>0){
-    h+="<div class='card'><div class='ct'>Recent Transactions</div>";
-    var rec=ST.spend.slice(-10).reverse();
-    for(var i=0;i<rec.length;i++){
-      h+="<div style='display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px'>";
-      h+="<span style='color:var(--muted)'>"+rec[i].cat+(rec[i].note?" — "+rec[i].note:"")+"<br><span style='font-size:10px'>"+rec[i].date+"</span></span>";
-      h+="<span style='color:var(--purple);font-weight:700'>$"+parseFloat(rec[i].amt).toFixed(0)+"</span></div>";
-    }
-    h+="</div>";
-  }
-  document.getElementById("budgetContent").innerHTML=h;
-}
-function logSpend(){
-  var amt=parseFloat(document.getElementById("inAmt").value);
-  if(!amt||isNaN(amt)){alert("Enter a valid amount");return;}
-  var cat=document.getElementById("inCat").value,note=document.getElementById("inNote").value;
-  ST.spend.push({cat:cat,amt:amt,note:note,date:td(),month:new Date().toISOString().slice(0,7)});
-  ST.alog.push({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),lbl:cat+(note?" — "+note:"")+" $"+amt,status:"spent",type:"spend"});
-  save();
-  document.getElementById("inAmt").value="";document.getElementById("inNote").value="";
-  var btn=document.querySelector("[onclick='logSpend()']");
-  btn.textContent="✅ Logged!";setTimeout(function(){btn.textContent="💾 Log Spend";},1500);
-  rBudget();
-}
-
-/* ─── MEALS ─── */
-function rMeals(){
-  var dow=new Date().getDay(),h="";
-  var order=[1,2,3,4,5,6,0];
-  for(var i=0;i<order.length;i++){
-    var d=order[i],m=MEALS[d],isT=d===dow;
-    h+="<div class='mcard' style='"+(isT?"border-color:var(--purple);border-width:2px":"")+"'>";
-    h+="<div class='mcbody'><div style='font-size:13px;font-weight:700;margin-bottom:8px;color:"+(isT?"var(--purple)":"var(--text)")+"'>"+DAYS[d]+(isT?" ← TODAY":"")+"</div>";
-    h+="<div class='mrow'><span class='micon'>🌅</span><span class='mtext'>"+m.b+"</span></div>";
-    h+="<div class='mrow'><span class='micon'>🌞</span><span class='mtext'>"+m.l+"</span></div>";
-    h+="<div class='mrow'><span class='micon'>🌙</span><span class='mtext'>"+m.d+"</span></div>";
-    h+="<div class='mrow'><span class='micon'>🍎</span><span class='mtext'>"+m.sn+"</span></div></div></div>";
-  }
-  document.getElementById("mealsContent").innerHTML=h;
-}
-
-/* ─── DASHBOARD ─── */
-function refreshDash(){
-  var done=0,skip=0,part=0;
-  for(var k in ST.tasks){var v=ST.tasks[k];if(v==="done")done++;else if(v==="skipped")skip++;else if(v==="partial")part++;}
-  var total=SCHED.length,pct=total>0?Math.round((done/total)*100):0;
-  var mon=new Date().toISOString().slice(0,7),totalSpent=0;
-  for(var i=0;i<ST.spend.length;i++){if(ST.spend[i].month===mon)totalSpent+=parseFloat(ST.spend[i].amt||0);}
-  var salary=getEff("Income","Salary");
-  var totalExp=0,cats=Object.keys(BUDGET_PLAN);
-  for(var i=0;i<cats.length;i++){if(BUDGET_PLAN[cats[i]].type==="income")continue;var its=Object.keys(BUDGET_PLAN[cats[i]].items);for(var j=0;j<its.length;j++)totalExp+=getEff(cats[i],its[j]);}
-  var h="";
-  // Quick log bar
-  h+="<div class='card'><div class='ct'>⚡ Quick Log</div><div style='display:grid;grid-template-columns:1fr 1fr;gap:8px'>";
-  h+="<button class='btn bp' style='padding:14px;font-size:13px' onclick='addWater();refreshDash()'>💧 Add Water<br><span style='font-size:18px;font-weight:800'>"+ST.water+"/8</span></button>";
-  h+="<button class='btn bg' style='padding:14px;font-size:13px' onclick='qWorkout()'>💪 Log Workout<br><span style='font-size:11px;opacity:.8'>Tap to mark done</span></button>";
-  h+="</div></div>";
-  // Stats
-  h+="<div class='card'><div class='ct'>📊 Today Stats</div>";
-  h+="<div style='display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px'>";
-  h+="<div class='stat'><div class='sv' style='color:var(--green)'>"+done+"</div><div class='sl'>Done</div></div>";
-  h+="<div class='stat'><div class='sv' style='color:var(--yellow)'>"+part+"</div><div class='sl'>Partial</div></div>";
-  h+="<div class='stat'><div class='sv' style='color:var(--red)'>"+skip+"</div><div class='sl'>Skip</div></div>";
-  h+="<div class='stat'><div class='sv' style='color:var(--blue)'>"+ST.water+"</div><div class='sl'>💧</div></div></div>";
-  h+="<div class='pbar'><div class='pfill' style='width:"+pct+"%'></div></div>";
-  h+="<div style='font-size:11px;color:var(--muted);text-align:right;margin-top:4px'>"+pct+"% day completion</div></div>";
-  // Money
-  h+="<div class='card'><div class='ct'>💰 Budget Snapshot</div>";
-  h+="<div style='display:flex;justify-content:space-between;margin-bottom:6px'><span style='color:var(--muted);font-size:13px'>Month budget</span><span style='font-weight:700;color:var(--text)'>$"+totalExp.toFixed(0)+"</span></div>";
-  h+="<div style='display:flex;justify-content:space-between;margin-bottom:6px'><span style='color:var(--muted);font-size:13px'>Logged spent</span><span style='font-weight:700;color:var(--orange)'>$"+totalSpent.toFixed(0)+"</span></div>";
-  h+="<div style='display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:8px'><span style='font-size:13px'>Remaining</span><span style='font-weight:800;font-size:16px;color:"+(totalExp-totalSpent>=0?"var(--green)":"var(--red)")+"'>$"+(totalExp-totalSpent).toFixed(0)+"</span></div>";
-  h+="<button class='btn bp' style='width:100%;margin-top:10px' onclick='showSec(\"budget\")'>View Full Budget →</button></div>";
-  // Streak
-  h+="<div class='card'><div class='ct'>🔥 Streak & Protein</div>";
-  h+="<div style='display:flex;justify-content:space-between;margin-bottom:8px'><span style='font-size:13px'>Workout streak</span><span style='font-weight:800;color:var(--yellow)'>"+ST.streak+" days 🔥</span></div>";
-  h+="<div style='display:flex;justify-content:space-between;margin-bottom:8px'><span style='font-size:13px'>Protein today</span><span style='font-weight:700;color:var(--purple)'>"+(ST.macros.prot||0)+"g</span></div>";
-  h+="<div style='display:flex;justify-content:space-between'><span style='font-size:13px'>Calories today</span><span style='font-weight:700;color:var(--text)'>"+(ST.macros.cal||0)+" kcal</span></div></div>";
-  document.getElementById("dashContent").innerHTML=h;
-}
-function qWorkout(){
-  var t=SCHED.find(function(x){return x.id==="t2";});
-  if(t){mTask("t2","done");}
-  ST.alog.push({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),lbl:"Workout logged ✅",status:"done",type:"task"});
-  if(ST.streak===0||!gl("last_streak")||gl("last_streak")!==td()){ST.streak++;sl("last_streak",td());}
-  save();refreshDash();
-  alert("💪 Workout marked done! Streak: "+ST.streak+" days 🔥");
-}
-
-/* ─── LOG ─── */
-function refreshLog(){
-  var h="";
-  if(ST.alog.length===0){
-    h="<div style='color:var(--muted);font-size:13px;text-align:center;padding:12px'>No actions logged yet today</div>";
-  } else {
-    h="<div class='action-log'>";
-    var logs=ST.alog.slice().reverse();
-    for(var i=0;i<logs.length;i++){
-      var l=logs[i];
-      var icon=l.type==="task"?(l.status==="done"?"✅":l.status==="skipped"?"❌":"🌓"):l.type==="spend"?"💰":"💧";
-      var scls=l.status==="done"?"s-done":l.status==="skipped"?"s-skip":l.status==="spent"?"s-done":"s-part";
-      h+="<div class='alog-row'><div class='alog-icon'>"+icon+"</div><div class='alog-text'>"+l.lbl+"</div>";
-      if(l.status)h+="<div class='alog-status "+scls+"'>"+l.status+"</div>";
-      h+="<div style='font-size:10px;color:var(--muted);margin-left:4px'>"+l.time+"</div></div>";
-    }
-    h+="</div>";
-  }
-  document.getElementById("alogContent").innerHTML=h;
-  document.getElementById("streakVal").textContent=ST.streak+" days 🔥";
-}
-function saveMacros(){
-  ST.macros.cal=parseInt(document.getElementById("inCal").value)||0;
-  ST.macros.prot=parseInt(document.getElementById("inProt").value)||0;
-  save();
-  document.getElementById("sCal").textContent=ST.macros.cal;
-  document.getElementById("sProt").textContent=ST.macros.prot+"g";
-  var btn=document.querySelector("[onclick='saveMacros()']");
-  btn.textContent="✅ Saved!";setTimeout(function(){btn.textContent="💾 Save Macros";},1500);
-}
-
-/* ─── AI KEY ─── */
-function saveKey(){
-  var k=document.getElementById("keyIn").value.trim();if(!k)return;
-  localStorage.setItem("groq_key",k);
-  document.getElementById("keyIn").value="";
-  document.getElementById("keyMsg").innerHTML="<span style='color:var(--green)'>✅ Key saved — AI ready!</span>";
-}
-function clearKey(){
-  localStorage.removeItem("groq_key");
-  document.getElementById("keyMsg").innerHTML="<span style='color:var(--muted)'>Cleared.</span>";
-}
-
-/* ─── AI COMMAND PARSER ─── */
-function parseAICommand(msg){
-  var m=msg.toLowerCase();
-  if(/add water|drank water|glass of water|had water|drink water/.test(m)){addWater();return {msg:"💧 Added a glass of water! "+ST.water+"/8 today. Logged in Track → Dashboard!"};}
-  if(/mark|done|complete|finished/.test(m)&&/workout|work|breakfast|lunch|dinner|sleep|supplement|wake|call/.test(m)){
-    for(var i=0;i<SCHED.length;i++){var words=SCHED[i].lbl.toLowerCase().split(/\s+/);for(var w=0;w<words.length;w++){if(words[w].length>3&&m.indexOf(words[w])>=0){mTask(SCHED[i].id,"done");return {msg:"✅ Marked '"+SCHED[i].lbl+"' as done! Track → Log updated."};}}
-    }
-  }
-  if(/spent|paid|bought|cost/.test(m)){
-    var amt=parseFloat((msg.match(/\$?(\d+(\.\d+)?)/)||[])[1]);
-    if(amt){
-      var cat=/grocer|veggie|food store/.test(m)?"Groceries":/eat|restaurant|lunch|dinner|cafe|takeout/.test(m)?"Eating Out":/ttc|transit|uber|cab/.test(m)?"Transit":/supplement|creatine|whey|protein powder/.test(m)?"Supplements":/concert|event|ticket|show/.test(m)?"Events":/shared|utilities|clean/.test(m)?"Shared":"Other";
-      ST.spend.push({cat:cat,amt:amt,note:msg.substring(0,50),date:td(),month:new Date().toISOString().slice(0,7)});
-      ST.alog.push({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),lbl:"Spent $"+amt+" — "+cat,status:"spent",type:"spend"});
-      save();return {msg:"💰 Logged $"+amt+" under '"+cat+"'. Check Track → Budget!"};
-    }
-  }
-  if(/reduce|increase|change|set|update|cut|lower|raise/.test(m)){
-    var amt2=parseFloat((msg.match(/\$?(\d+(\.\d+)?)/)||[])[1]);
-    if(amt2){
-      var allCats=Object.keys(BUDGET_PLAN);
-      for(var ci=0;ci<allCats.length;ci++){
-        var cat2=allCats[ci];if(BUDGET_PLAN[cat2].type==="income")continue;
-        var items=Object.keys(BUDGET_PLAN[cat2].items);
-        for(var ii=0;ii<items.length;ii++){
-          var item=items[ii];var kw=item.toLowerCase().replace(/[^a-z]/g," ").trim().split(/\s+/);var match=false;
-          for(var ki=0;ki<kw.length;ki++){if(kw[ki].length>3&&m.indexOf(kw[ki])>=0){match=true;break;}}
-          if(match){
-            var current=getEff(cat2,item);
-            var newAmt2=/reduce|decrease|cut|lower/.test(m)?current-amt2:/increase|raise|add more/.test(m)?current+amt2:amt2;
-            setBudgetItem(cat2,item,newAmt2);
-            ST.alog.push({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),lbl:"Budget '"+item+"': $"+current+"→$"+Math.max(0,newAmt2),status:"done",type:"budget"});
-            save();return {msg:"💰 Updated '"+item+"' budget: $"+current+" → $"+Math.max(0,newAmt2).toFixed(0)+". Track → Budget updated!"};
-          }
-        }
-      }
-    }
-  }
-  if(/salary|income/.test(m)){var sal=parseFloat((msg.match(/\$?(\d+)/)||[])[1]);if(sal){setBudgetItem("Income","Salary",sal);save();return {msg:"💵 Salary updated to $"+sal+"/month!"};}}
-  return null;
-}
-
-/* ─── AI CHAT ─── */
-function buildCtx(){
-  var today=td(),dow=new Date().getDay(),ev=getEv(today);
-  var tmr=new Date();tmr.setDate(tmr.getDate()+1);var tmrEv=getEv(tmr.toISOString().split("T")[0]);
-  var done=0;for(var k in ST.tasks){if(ST.tasks[k]==="done")done++;}
-  var tr=TRAIN[dow]||TRAIN[0],m=MEALS[dow]||MEALS[1];
-  var mon=new Date().toISOString().slice(0,7),ts=0;
-  for(var i=0;i<ST.spend.length;i++){if(ST.spend[i].month===mon)ts+=parseFloat(ST.spend[i].amt||0);}
-  var salary=getEff("Income","Salary");
-  var totalExp=0,cats=Object.keys(BUDGET_PLAN);
-  for(var i=0;i<cats.length;i++){if(BUDGET_PLAN[cats[i]].type==="income")continue;var it=Object.keys(BUDGET_PLAN[cats[i]].items);for(var j=0;j<it.length;j++)totalExp+=getEff(cats[i],it[j]);}
-  var ctx="You are Aman's personal AI life coach. Be warm, motivating, specific. Max 150 words. Use emojis.\n\n";
-  ctx+="PROFILE: 16 Bonnycastle Toronto. HYROX sub 1:20 Oct 2026. Strict vegetarian (no eggs). Salary $"+salary+"/month. Net after budget: $"+(salary-totalExp).toFixed(0)+"/month.\n\n";
-  ctx+="TODAY ("+fmt(today)+"): "+(ev?"EVENT: "+ev.name+". "+ev.note:"Normal day")+".\n";
-  ctx+="Training: "+tr.lbl+" | Tasks done: "+done+"/"+SCHED.length+"\n";
-  ctx+="Macros: "+(ST.macros.cal||0)+" kcal / "+(ST.macros.prot||0)+"g protein | Water: "+ST.water+"/8 | Streak: "+ST.streak+"d\n";
-  ctx+="Month spend logged: $"+ts.toFixed(0)+" of $"+totalExp.toFixed(0)+" budgeted\n\n";
-  ctx+="TOMORROW: "+(tmrEv?tmrEv.name+": "+tmrEv.note:(TRAIN[tmr.getDay()]||TRAIN[0]).lbl)+".\n";
-  ctx+="EVENTS: Bruno Mars May 27, Office Party May 28, Cruise May 30, Diljit Jun 1.\n";
-  ctx+="TRAINING: No SkiErg/sled. SkiErg=Burpee Broad Jumps, Sled Push=Wall Ball, Sled Pull=Farmers Carry.";
-  return ctx;
-}
-function addMsg(text,role){
-  var box=document.getElementById("chatBox"),div=document.createElement("div");
-  div.className="msg "+(role==="user"?"u":"a");
-  div.innerHTML=text.replace(/\n/g,"<br>").replace(/\*\*(.*?)\*\*/g,"<b>$1</b>");
-  box.appendChild(div);box.scrollTop=box.scrollHeight;return div;
-}
-function sendMsg(){
-  var input=document.getElementById("chatIn"),msg=input.value.trim();
-  if(!msg)return;
-  addMsg(msg,"user");input.value="";
-  var cmd=parseAICommand(msg);
-  if(cmd){addMsg(cmd.msg,"ai");return;}
-  var typing=addMsg("⏳ Thinking...","ai");
-  var key=localStorage.getItem("groq_key");
-  if(!key){typing.innerHTML="No AI key saved. Scroll down and paste your free Groq key.";return;}
-  fetch("https://api.groq.com/openai/v1/chat/completions",{
-    method:"POST",
-    headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
-    body:JSON.stringify({model:"meta-llama/llama-4-scout-17b-16e-instruct",messages:[{role:"system",content:buildCtx()},{role:"user",content:msg}],temperature:0.8,max_tokens:400})
-  }).then(function(r){return r.json();}).then(function(data){
-    var reply=(data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||(data.error&&data.error.message)||"Could not get response.";
-    typing.innerHTML=reply.replace(/\n/g,"<br>").replace(/\*\*(.*?)\*\*/g,"<b>$1</b>");
-    document.getElementById("chatBox").scrollTop=9999;
-  }).catch(function(){typing.innerHTML="Connection error. Check internet.";});
-}
-function ask(q){document.getElementById("chatIn").value=q;sendMsg();}
-
-/* ─── VOICE ─── */
-var recog=null;
-function initVoice(){
-  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR)return;
-  recog=new SR();recog.continuous=false;recog.interimResults=true;recog.lang="en-CA";
-  recog.onstart=function(){document.getElementById("micBtn").classList.add("on");document.getElementById("micStatus").textContent="🎤 Listening...";};
-  recog.onresult=function(e){var t="";for(var i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;document.getElementById("chatIn").value=t;};
-  recog.onend=function(){document.getElementById("micBtn").classList.remove("on");var v=document.getElementById("chatIn").value.trim();if(v){document.getElementById("micStatus").textContent="";sendMsg();}else document.getElementById("micStatus").textContent="";};
-  recog.onerror=function(e){document.getElementById("micBtn").classList.remove("on");document.getElementById("micStatus").textContent=e.error==="not-allowed"?"❌ Allow mic in browser":"❌ "+e.error;};
-}
-document.getElementById("micBtn").addEventListener("click",function(){if(!recog)initVoice();if(!recog){alert("Use Safari on iPhone or Chrome on Android.");return;}try{recog.start();}catch(e){recog.stop();}});
-document.getElementById("chatIn").addEventListener("keydown",function(e){if(e.key==="Enter")sendMsg();});
-document.getElementById("sendBtn").addEventListener("click",sendMsg);
-
-/* ─── AUTO-LOAD KEY ─── */
-(function(){
-  if(!localStorage.getItem("groq_key")){
-    localStorage.setItem("groq_key",["gsk_r2FFTpD7jF515owC","rQUHWGdyb3FYIbVfGvxc","HUm0Z51iKvtXLLOE"].join(""));
-  }
-})();
-
-/* ─── AI AUTO-GREET ─── */
-(function(){
-  var dow=new Date().getDay(),ev=getEv(td());
-  var tr=TRAIN[dow]||TRAIN[0];
-  var greeting="Hey Aman! 👋 I know your full schedule, budget, training and events.\n\n";
-  if(ev)greeting+="🎉 **"+ev.name+" TODAY!** "+ev.note+"\n\n";
-  greeting+="💪 Today's training: **"+tr.lbl+"**\n";
-  greeting+="💧 Water: "+ST.water+"/8 glasses | 🔥 Streak: "+ST.streak+" days\n\n";
-  greeting+="Try: *\"Add water\"*, *\"I spent $30 on groceries\"*, *\"Mark workout done\"*";
-  addMsg(greeting,"ai");
-  document.getElementById("keyMsg").innerHTML=localStorage.getItem("groq_key")?
-    "<span style='color:var(--green)'>✅ AI key active — agent ready</span>":
-    "<span style='color:var(--yellow)'>⚠️ No key — paste your free Groq key above</span>";
-})();
-
-/* ─── INIT ─── */
-rToday();
-document.getElementById("topDate").textContent=fmt(td());
-</script>
-</body>
-</html>
+            <button class="btn bg" 
